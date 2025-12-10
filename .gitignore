@@ -1,0 +1,10 @@
+/node_modules
+/twentytwentyfive
+/twentytwentyfour
+/twentytwentythree
+/hello-elementor
+/astra
+package-lock.json
+package.json
+webpack.config.js
+index.php
