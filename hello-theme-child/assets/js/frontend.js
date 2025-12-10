@@ -13345,6 +13345,19 @@ document.addEventListener('DOMContentLoaded', () => {
   (0,lib_init_blocks__WEBPACK_IMPORTED_MODULE_5__["default"])({
     block: 'blocks'
   }).mount();
+
+  // Kiểm tra user đã đăng nhập chưa
+  if (document.body.classList.contains("logged-in")) {
+    // Tìm tất cả item trong icon list
+    const items = document.querySelectorAll('.elementor-icon-list-item a');
+    items.forEach(function (item) {
+      const textEl = item.querySelector('.elementor-icon-list-text');
+      if (textEl && textEl.textContent.trim() === 'Sign in') {
+        textEl.textContent = 'My account'; // đổi text
+        item.setAttribute('href', '/my-account/'); // đổi link
+      }
+    });
+  }
 });
 })();
 
