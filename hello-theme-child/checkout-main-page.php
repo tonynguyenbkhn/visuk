@@ -21,8 +21,8 @@ if ($data['custom_css']) {
     <div class="info-section">
       <div class="info-section__header">
         <h3><?php echo esc_html('Vis vip member') ?></h3>
-        <span class="method_plan">(Monthly)</span>
-        <a class="change_plan">
+        <!-- <span class="method_plan">(Monthly)</span> -->
+        <a href="/membership/" class="change_plan">
           Change Plan
         </a>
       </div>
