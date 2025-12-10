@@ -8865,7 +8865,7 @@ ul.reset {
   border: 1px solid var(--primary);
   border-radius: 24px;
   box-shadow: none;
-  padding: 44px 40px 55px 40px;
+  padding: 20px;
   transition: all 0.3s ease;
   top: 0;
 }
@@ -8885,6 +8885,26 @@ ul.reset {
 .page__vis-membership .ihc_level_template_5 .ihc-level-item-wrap:hover .ihc-level-item-content *,
 .page__vis-membership .ihc_level_template_5 .ihc-level-item-wrap:hover .ihc-level-item-title {
   color: white !important;
+}
+
+.page__vis-membership .ihc_level_template_5 .ihc-level-item-wrap .ihc-level-item-price {
+  position: relative;
+}
+
+.page__vis-membership .ihc_level_template_5 .ihc-level-item-wrap .ihc-level-item-price::after {
+  content: "/Year";
+  font-size: 16px;
+  font-weight: normal;
+  color: var(--primary);
+}
+
+.page__vis-membership .ihc_level_template_5 .ihc-level-item:nth-child(1) .ihc-level-item-price::after, 
+.page__vis-membership .ihc_level_template_5 .ihc-level-item:nth-child(2) .ihc-level-item-price::after {
+  display: none !important;
+}
+
+.page__vis-membership .ihc_level_template_5 .ihc-level-item-wrap:hover .ihc-level-item-price::after {
+  color: white;
 }
 
 .page__vis-membership .ihc_level_template_5 .ihc-level-item-wrap:hover .ihc-level-item-content ul li,
