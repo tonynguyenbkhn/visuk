@@ -13358,6 +13358,43 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
+  function updateActiveBox() {
+    const boxes = document.querySelectorAll('.iump-form-paybox');
+    boxes.forEach(b => b.classList.remove('active'));
+    const selectedImg = document.querySelector('.ihc-payment-select-img-selected');
+    if (selectedImg) {
+      const box = selectedImg.closest('.iump-form-paybox');
+      if (box) box.classList.add('active');
+    }
+  }
+
+  // chạy 1 lần khi trang load
+  updateActiveBox();
+
+  // Observer lên toàn bộ BODY (KHÔNG BAO GIỜ bị replace)
+  const observer = new MutationObserver(mutations => {
+    let changed = false;
+    mutations.forEach(m => {
+      // Khi có new HTML sau AJAX
+      if (m.type === 'childList' && (m.addedNodes.length || m.removedNodes.length)) {
+        changed = true;
+      }
+      // Hoặc khi plugin đổi class selected
+      if (m.type === 'attributes' && m.attributeName === 'class') {
+        changed = true;
+      }
+    });
+    if (changed) {
+      // đợi DOM update xong
+      requestAnimationFrame(updateActiveBox);
+    }
+  });
+  observer.observe(document.body, {
+    childList: true,
+    subtree: true,
+    attributes: true,
+    attributeFilter: ['class']
+  });
 });
 })();
 

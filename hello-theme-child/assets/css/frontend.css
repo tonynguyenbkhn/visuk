@@ -17153,14 +17153,22 @@ ul.reset {
   color: var(--primary);
 }
 
-.page__vis-checkout .ihc-checkout-page-payment-selection .iump-form-paybox {
+.page__vis-checkout .ihc-checkout-page-payment-selection .iump-form-paybox.active {
   border: 1px solid var(--primary);
+}
+
+.page__vis-checkout .ihc-checkout-page-payment-selection .iump-form-paybox {
+  border: 1px solid #B5B2C1;
   height: 52px;
   width: 49% !important;
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 0;
+}
+
+.page__vis-checkout .ihc-checkout-page-payment-selection .iump-form-paybox:hover {
+  border: 1px solid var(--primary);
 }
 
 .page__vis-checkout .ihc-select-payment-theme-2 {
