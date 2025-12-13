@@ -16436,6 +16436,54 @@ ul.reset {
 .page-digital-hub .post-list {
   margin-top: 85px;
 }
+@media (max-width: 767px) {
+  .page-digital-hub .post-list {
+    margin-top: 45px;
+  }
+}
+.page-digital-hub .post-list .post-card {
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.15);
+  margin-bottom: 112px;
+}
+.page-digital-hub .post-list .post-card__image {
+  width: 100%;
+  height: 100%;
+}
+.page-digital-hub .post-list .post-card__overlay-link {
+  display: block;
+  height: 254px;
+}
+.page-digital-hub .post-list .post-card__overlay-link img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.page-digital-hub .post-list .post-card__title {
+  font-size: 16px;
+  font-family: var(--font-body);
+  text-transform: capitalize;
+  color: var(--title);
+  text-align: center;
+}
+.page-digital-hub .post-list .post-card__content {
+  padding: 20px 30px;
+}
+.page-digital-hub .post-list .post-card__button {
+  height: 44px;
+  width: 100%;
+  color: var(--white);
+  background-color: var(--primary);
+  display: flex;
+  align-items: center;
+  font-size: 18px;
+  font-variant: small-caps;
+  font-weight: 400;
+  font-family: var(--font-heading);
+  justify-content: center;
+  gap: 10px;
+}
 
 .page-digital-hub .post-list .post-row__title {
   font-size: 24px;
@@ -16454,6 +16502,11 @@ ul.reset {
   width: 100%;
   margin-bottom: 55px;
   position: relative;
+}
+@media (max-width: 767px) {
+  .page-digital-hub form {
+    margin-bottom: 0;
+  }
 }
 
 .page-digital-hub form label {
@@ -16847,7 +16900,9 @@ ul.reset {
   align-items: center;
   justify-content: center;
   position: absolute;
-  top: 0;
+  top: -8px;
+  padding: 0;
+  border: 0;
   right: 0;
   width: 44px;
   height: 44px;
@@ -18099,6 +18154,16 @@ button.swiper-pagination-bullet {
   font-weight: 700;
 }
 
+.filter-wrapper {
+  gap: 20px;
+}
+@media (max-width: 767px) {
+  .filter-wrapper {
+    overflow-x: scroll;
+    white-space: nowrap;
+  }
+}
+
 .select-form {
   position: relative;
   font-family: var(--font-body);
@@ -18108,11 +18173,16 @@ button.swiper-pagination-bullet {
 .select-form .select-label {
   height: 60px;
   width: auto;
-  padding: 25px 20px;
+  padding: 0 20px;
   border: 1px solid #B5B2C1;
 }
+@media (max-width: 767px) {
+  .select-form .select-label {
+    height: 50px;
+  }
+}
 .select-form .select-label span {
-  margin-right: 70px;
+  margin-right: 50px;
 }
 .select-form .select-label svg path {
   stroke-width: 0;
@@ -18155,6 +18225,15 @@ button.swiper-pagination-bullet {
 .filter-wrap {
   margin-bottom: 15px;
 }
+@media (max-width: 767px) {
+  .filter-wrap {
+    flex-flow: row wrap;
+    margin-top: 10px;
+  }
+}
+.filter-wrap .filter-label {
+  margin-bottom: 10px;
+}
 
 .page-digital-hub form .filder-active-item {
   font-family: var(--font-body);
@@ -18171,6 +18250,7 @@ button.swiper-pagination-bullet {
 }
 .page-digital-hub form .filder-active-item a {
   color: var(--title);
+  display: flex;
 }
 .page-digital-hub form .filder-active-item svg {
   width: 10px;

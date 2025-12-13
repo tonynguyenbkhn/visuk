@@ -65,15 +65,79 @@ $options = $data['options'];
 				'categories' => $options['show_categories'],
 				'class' => 'post-card__post-meta'
 			]);
+
+			$icon = '';
+			$button_url = '';
+			$button_text = '';
+
+			$who = get_post_meta(get_the_ID(), 'ihc_mb_who', true);
+			$typePost = ihc_get_access_type_by_membership_ids($who);
+			if ($typePost === 'all') {
+				$icon = '';
+				$button_text = 'Download Now';
+				$button_url = esc_url_raw(get_permalink($post_data));
+			} else {
+				if (is_user_logged_in()) {
+					$current_user = wp_get_current_user();
+
+					$user_levels = get_ihc_user_level_single($current_user->ID);
+
+					if (empty($user_levels)) {
+						$icon = twmp_get_svg_icon('lock');
+						$button_text = 'Join to Download';
+						$button_url = esc_url_raw(home_url('/membership/'));
+					} else {
+
+						$user_subscription_meta = get_ihc_subscription_payment_info($user_levels['id']);
+						$status = get_ihc_order_status_by_user_level($current_user->ID, $user_levels['level_id']);
+						if (!empty($who)) {
+							$needed_levels = array_map('trim', explode(',', $who));
+							if (in_array($user_levels['level_id'], $needed_levels)) {
+
+								if ($status === 'Completed') {
+									$icon = '';
+									$button_text = 'Download Now';
+									$button_url = esc_url_raw(get_permalink($post_data));
+								} else {
+									$icon = twmp_get_svg_icon('lock');
+									$button_text = 'Join to Download';
+									$button_url = esc_url_raw(home_url('/membership/'));
+								}
+							} elseif ($typePost == 'free' && $user_subscription_meta['payment_type'] == 'payment') {
+								if ($status === 'Completed') {
+									$icon = '';
+									$button_text = 'Download Now';
+									$button_url = esc_url_raw(get_permalink($post_data));
+								} else {
+									$icon = twmp_get_svg_icon('lock');
+									$button_text = 'Join to Download';
+									$button_url = esc_url_raw(home_url('/membership/'));
+								}
+							} else {
+								$icon = twmp_get_svg_icon('lock');
+								$button_text = 'Join to Download';
+								$button_url = esc_url_raw(home_url('/membership/'));
+							}
+						} else {
+							$icon = '';
+							$button_text = 'Download Now';
+						}
+					}
+				} else {
+					$icon = twmp_get_svg_icon('lock');
+					$button_text = 'Join to Download';
+					$button_url = esc_url_raw(home_url('/membership/'));
+				}
+			}
 			?>
 			<?php if ($data['view_more_button'] !== '') : ?>
 				<div class="post-card__footer">
 					<?php
 					get_template_part('templates/button', null, [
 						'class'       => 'post-card__button',
-						'button_text' => $data['view_more_button'],
-						'button_url' => esc_url_raw(get_permalink($post_data)),
-						'svg_icon_after' => twmp_get_svg_icon('angle-long-right')
+						'button_text' => $button_text,
+						'button_url' => $button_url,
+						'svg_icon_before' => $icon,
 					]);
 					?>
 				</div>

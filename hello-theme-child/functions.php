@@ -159,6 +159,9 @@ function twmp_get_svg_icon($name)
 		case 'restricted':
 			$svg_icon = '<svg width="10" height="13" viewBox="0 0 10 13" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.16667 4.08333H7.58333V2.91667C7.58333 1.30667 6.27667 0 4.66667 0C3.05667 0 1.75 1.30667 1.75 2.91667V4.08333H1.16667C0.525 4.08333 0 4.60833 0 5.25V11.0833C0 11.725 0.525 12.25 1.16667 12.25H8.16667C8.80833 12.25 9.33333 11.725 9.33333 11.0833V5.25C9.33333 4.60833 8.80833 4.08333 8.16667 4.08333ZM2.91667 2.91667C2.91667 1.94833 3.69833 1.16667 4.66667 1.16667C5.635 1.16667 6.41667 1.94833 6.41667 2.91667V4.08333H2.91667V2.91667ZM8.16667 11.0833H1.16667V5.25H8.16667V11.0833ZM4.66667 9.33333C5.30833 9.33333 5.83333 8.80833 5.83333 8.16667C5.83333 7.525 5.30833 7 4.66667 7C4.025 7 3.5 7.525 3.5 8.16667C3.5 8.80833 4.025 9.33333 4.66667 9.33333Z" fill="#383084"/></svg>';
 			break;
+		case 'lock':
+			$svg_icon = '<svg width="14" height="18" viewBox="0 0 14 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M11.6667 5.83333H10.8333V4.16667C10.8333 1.86667 8.96667 0 6.66667 0C4.36667 0 2.5 1.86667 2.5 4.16667V5.83333H1.66667C0.75 5.83333 0 6.58333 0 7.5V15.8333C0 16.75 0.75 17.5 1.66667 17.5H11.6667C12.5833 17.5 13.3333 16.75 13.3333 15.8333V7.5C13.3333 6.58333 12.5833 5.83333 11.6667 5.83333ZM4.16667 4.16667C4.16667 2.78333 5.28333 1.66667 6.66667 1.66667C8.05 1.66667 9.16667 2.78333 9.16667 4.16667V5.83333H4.16667V4.16667ZM11.6667 15.8333H1.66667V7.5H11.6667V15.8333ZM6.66667 13.3333C7.58333 13.3333 8.33333 12.5833 8.33333 11.6667C8.33333 10.75 7.58333 10 6.66667 10C5.75 10 5 10.75 5 11.6667C5 12.5833 5.75 13.3333 6.66667 13.3333Z" fill="white"/></svg>';
+			break;
 	endswitch;
 
 	return $svg_icon;
@@ -462,4 +465,121 @@ function get_ihc_membership_labels_by_ids( $ids_string ) {
     );
 
     return $wpdb->get_results( $sql, ARRAY_A );
+}
+
+function ihc_get_access_type_by_membership_ids( $ids_string ) {
+    global $wpdb;
+
+    if ( empty($ids_string) ) {
+        return 'all';
+    }
+
+    // Convert "5,6,7" -> [5,6,7]
+    $ids = array_filter(
+        array_map('intval', explode(',', $ids_string))
+    );
+
+    if ( empty($ids) ) {
+        return 'all';
+    }
+
+    $table = $wpdb->prefix . 'ihc_memberships';
+
+    // Query payment_type
+    $placeholders = implode(',', array_fill(0, count($ids), '%d'));
+
+    $sql = $wpdb->prepare(
+        "SELECT payment_type FROM {$table} WHERE id IN ($placeholders)",
+        $ids
+    );
+
+    $types = $wpdb->get_col( $sql );
+
+    if ( empty($types) ) {
+        return 'all';
+    }
+
+    // Rule 1: chỉ cần 1 payment
+    if ( in_array('payment', $types, true) ) {
+        return 'payment';
+    }
+
+    // Rule 2: toàn bộ free
+    if ( count(array_unique($types)) === 1 && $types[0] === 'free' ) {
+        return 'free';
+    }
+
+    // Rule 3: còn lại
+    return 'all';
+}
+
+function get_ihc_user_level_single( $user_id ) {
+    global $wpdb;
+
+    $user_id = (int) $user_id;
+    if ( $user_id <= 0 ) {
+        return null;
+    }
+
+    $table = $wpdb->prefix . 'ihc_user_levels';
+
+    return $wpdb->get_row(
+        $wpdb->prepare(
+            "SELECT id, level_id
+             FROM {$table}
+             WHERE user_id = %d
+               AND status = 1
+             ORDER BY start_time DESC
+             LIMIT 1",
+            $user_id
+        ),
+        ARRAY_A
+    );
+}
+
+function get_ihc_subscription_payment_info( $subscription_id ) {
+    global $wpdb;
+
+    $subscription_id = (int) $subscription_id;
+    if ( $subscription_id <= 0 ) {
+        return null;
+    }
+
+    $table = $wpdb->prefix . 'ihc_user_subscriptions_meta';
+
+    return $wpdb->get_row(
+        $wpdb->prepare(
+            "
+            SELECT
+                MAX(CASE WHEN meta_key = 'id' THEN meta_value END)            AS membership_id,
+                MAX(CASE WHEN meta_key = 'payment_type' THEN meta_value END) AS payment_type,
+                MAX(CASE WHEN meta_key = 'price' THEN meta_value END)        AS price
+            FROM {$table}
+            WHERE subscription_id = %d
+            ",
+            $subscription_id
+        ),
+        ARRAY_A
+    );
+}
+
+function get_ihc_order_status_by_user_level( $user_id, $level_id ) {
+    global $wpdb;
+
+    $table = $wpdb->prefix . 'ihc_orders';
+
+    return $wpdb->get_var(
+        $wpdb->prepare(
+            "
+            SELECT status
+            FROM {$table}
+            WHERE uid = %d
+              AND lid = %d
+            ORDER BY create_date DESC
+            LIMIT 1
+            ",
+            (int) $user_id,
+            (int) $level_id
+        )
+    );
 }

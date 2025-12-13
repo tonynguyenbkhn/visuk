@@ -40,7 +40,7 @@ if (isset($data['data_search']['to_year']) && is_string($data['data_search']['to
     <div class="modal__wrapper">
         <div class="modal__header">
             <span class="modal__title"><?php esc_html_e('advanced searching', 'twmp-vis'); ?></span>
-            <button class="modal__close-button" data-close-modal="modal-search-form" aria-label="<?php echo esc_attr__('Close a search form modal', 'twmp-vis'); ?>">
+            <button class="modal__close-button" data-close-modal="modal-filter-form" aria-label="<?php echo esc_attr__('Close a search form modal', 'twmp-vis'); ?>">
                 <?php echo twmp_get_svg_icon('close'); ?>
             </button>
         </div>

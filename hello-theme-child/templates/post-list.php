@@ -35,7 +35,7 @@ if (! empty($selected_posts)) {
 
 $post_query = $data['query'] ? $data['query'] : new WP_Query($post_args);
 
-$grid_css_class = 'col-12 mb-1';
+$grid_css_class = 'col-3 col-md-3 col-12';
 
 if ($post_query->have_posts()) :
 ?>
@@ -54,19 +54,36 @@ if ($post_query->have_posts()) :
             <?php
             while ($post_query->have_posts()) :
                 $post_query->the_post();
+                
             ?>
                 <div class="<?php echo esc_attr($grid_css_class); ?>">
                     <?php
+                    // get_template_part(
+                    //     'templates/post-row',
+                    //     null,
+                    //     array(
+                    //         'post_data' => get_post(get_the_ID()),
+                    //         'view_more_button' => '',
+                    //         'post_title_limit' => 10,
+                    //         'options' => [
+                    //             'show_excerpt' => false,
+                    //             'show_date' => true,
+                    //             'show_author' => false,
+                    //             'show_categories' => false
+                    //         ]
+                    //     )
+                    // );
+
                     get_template_part(
-                        'templates/post-row',
+                        'templates/post-card',
                         null,
                         array(
                             'post_data' => get_post(get_the_ID()),
-                            'view_more_button' => '',
                             'post_title_limit' => 10,
+                            'post_id' => get_the_ID(),
                             'options' => [
                                 'show_excerpt' => false,
-                                'show_date' => true,
+                                'show_date' => false,
                                 'show_author' => false,
                                 'show_categories' => false
                             ]

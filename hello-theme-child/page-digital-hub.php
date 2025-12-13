@@ -243,176 +243,178 @@ get_header();
 								?>
 								<div class="d-flex align-items-center justify-content-between filter-wrap">
 									<span class="filter-label">Filter</span>
-									<div class="select-form">
-										<div class="select-label d-flex justify-content-between align-items-center">
-											<span>Folder</span>
-											<?php echo twmp_get_svg_icon('angle-down') ?>
+									<div class="filter-wrapper d-flex align-items-center justify-content-between">
+										<div class="select-form">
+											<div class="select-label d-flex justify-content-between align-items-center">
+												<span>Folder</span>
+												<?php echo twmp_get_svg_icon('angle-down') ?>
+											</div>
+											<ul>
+												<li class="<?php echo empty($folder) ? 'active' : '' ?>">
+													<a href="<?php echo esc_url(remove_query_arg('folder')); ?>">
+														All Folders
+													</a>
+												</li>
+
+												<li class="<?php echo !empty($folder) && $folder === 'video' ? 'active' : '' ?>">
+													<a href="<?php echo esc_url(add_query_arg('folder', 'video')); ?>">
+														Videos
+													</a>
+												</li>
+
+												<li class="<?php echo !empty($folder) && $folder === 'publication' ? 'active' : '' ?>">
+													<a href="<?php echo esc_url(add_query_arg('folder', 'publication')); ?>">
+														Publications
+													</a>
+												</li>
+
+												<li class="<?php echo !empty($folder) && $folder === 'slide' ? 'active' : '' ?>">
+													<a href="<?php echo esc_url(add_query_arg('folder', 'slide')); ?>">
+														Slides
+													</a>
+												</li>
+											</ul>
 										</div>
-										<ul>
-											<li class="<?php echo empty($folder) ? 'active' : '' ?>">
-												<a href="<?php echo esc_url(remove_query_arg('folder')); ?>">
-													All Folders
-												</a>
-											</li>
 
-											<li class="<?php echo !empty($folder) && $folder === 'video' ? 'active' : '' ?>">
-												<a href="<?php echo esc_url(add_query_arg('folder', 'video')); ?>">
-													Videos
-												</a>
-											</li>
+										<div class="select-form">
+											<div class="select-label d-flex justify-content-between align-items-center">
+												<span>Type</span>
+												<?php echo twmp_get_svg_icon('angle-down') ?>
+											</div>
+											<ul>
+												<li class="<?php echo empty($type) ? 'active' : '' ?>">
+													<a href="<?php echo esc_url(remove_query_arg('type')); ?>">
+														All Type
+													</a>
+												</li>
 
-											<li class="<?php echo !empty($folder) && $folder === 'publication' ? 'active' : '' ?>">
-												<a href="<?php echo esc_url(add_query_arg('folder', 'publication')); ?>">
-													Publications
-												</a>
-											</li>
+												<li class="<?php echo !empty($type) && $type === 'pdf' ? 'active' : '' ?>">
+													<a href="<?php echo esc_url(add_query_arg('type', 'pdf')); ?>">
+														PDF
+													</a>
+												</li>
 
-											<li class="<?php echo !empty($folder) && $folder === 'slide' ? 'active' : '' ?>">
-												<a href="<?php echo esc_url(add_query_arg('folder', 'slide')); ?>">
-													Slides
-												</a>
-											</li>
-										</ul>
-									</div>
+												<li class="<?php echo !empty($type) && $type === 'doc' ? 'active' : '' ?>">
+													<a href="<?php echo esc_url(add_query_arg('type', 'doc')); ?>">
+														DOC
+													</a>
+												</li>
 
-									<div class="select-form">
-										<div class="select-label d-flex justify-content-between align-items-center">
-											<span>Type</span>
-											<?php echo twmp_get_svg_icon('angle-down') ?>
+												<li class="<?php echo !empty($type) && $type === 'docs' ? 'active' : '' ?>">
+													<a href="<?php echo esc_url(add_query_arg('type', 'docs')); ?>">
+														DOCX
+													</a>
+												</li>
+
+												<li class="<?php echo !empty($type) && $type === 'ppt' ? 'active' : '' ?>">
+													<a href="<?php echo esc_url(add_query_arg('type', 'ppt')); ?>">
+														PPT
+													</a>
+												</li>
+
+												<li class="<?php echo !empty($type) && $type === 'pptx' ? 'active' : '' ?>">
+													<a href="<?php echo esc_url(add_query_arg('type', 'pptx')); ?>">
+														PPTX
+													</a>
+												</li>
+
+												<li class="<?php echo !empty($type) && $type === 'xls' ? 'active' : '' ?>">
+													<a href="<?php echo esc_url(add_query_arg('type', 'xls')); ?>">
+														XLS
+													</a>
+												</li>
+
+												<li class="<?php echo !empty($type) && $type === 'xlsx' ? 'active' : '' ?>">
+													<a href="<?php echo esc_url(add_query_arg('type', 'xlsx')); ?>">
+														XLSX
+													</a>
+												</li>
+											</ul>
 										</div>
-										<ul>
-											<li class="<?php echo empty($type) ? 'active' : '' ?>">
-												<a href="<?php echo esc_url(remove_query_arg('type')); ?>">
-													All Type
-												</a>
-											</li>
 
-											<li class="<?php echo !empty($type) && $type === 'pdf' ? 'active' : '' ?>">
-												<a href="<?php echo esc_url(add_query_arg('type', 'pdf')); ?>">
-													PDF
-												</a>
-											</li>
+										<div class="select-form">
+											<div class="select-label d-flex justify-content-between align-items-center">
+												<span>Restricted/Free:</span>
+												<?php echo twmp_get_svg_icon('angle-down') ?>
+											</div>
+											<ul>
+												<li class="<?php echo empty($limit) ? 'active' : '' ?>">
+													<a href="<?php echo esc_url(remove_query_arg('limit')); ?>">
+														All access levels
+													</a>
+												</li>
 
-											<li class="<?php echo !empty($type) && $type === 'doc' ? 'active' : '' ?>">
-												<a href="<?php echo esc_url(add_query_arg('type', 'doc')); ?>">
-													DOC
-												</a>
-											</li>
+												<li class="<?php echo !empty($limit) && $limit === 'free' ? 'active' : '' ?>">
+													<a href="<?php echo esc_url(add_query_arg('limit', 'free')); ?>">
+														Free access
+													</a>
+												</li>
 
-											<li class="<?php echo !empty($type) && $type === 'docs' ? 'active' : '' ?>">
-												<a href="<?php echo esc_url(add_query_arg('type', 'docs')); ?>">
-													DOCX
-												</a>
-											</li>
-
-											<li class="<?php echo !empty($type) && $type === 'ppt' ? 'active' : '' ?>">
-												<a href="<?php echo esc_url(add_query_arg('type', 'ppt')); ?>">
-													PPT
-												</a>
-											</li>
-
-											<li class="<?php echo !empty($type) && $type === 'pptx' ? 'active' : '' ?>">
-												<a href="<?php echo esc_url(add_query_arg('type', 'pptx')); ?>">
-													PPTX
-												</a>
-											</li>
-
-											<li class="<?php echo !empty($type) && $type === 'xls' ? 'active' : '' ?>">
-												<a href="<?php echo esc_url(add_query_arg('type', 'xls')); ?>">
-													XLS
-												</a>
-											</li>
-
-											<li class="<?php echo !empty($type) && $type === 'xlsx' ? 'active' : '' ?>">
-												<a href="<?php echo esc_url(add_query_arg('type', 'xlsx')); ?>">
-													XLSX
-												</a>
-											</li>
-										</ul>
-									</div>
-
-									<div class="select-form">
-										<div class="select-label d-flex justify-content-between align-items-center">
-											<span>Restricted/Free:</span>
-											<?php echo twmp_get_svg_icon('angle-down') ?>
+												<li class="<?php echo !empty($limit) && $limit === 'payment' ? 'active' : '' ?>">
+													<a href="<?php echo esc_url(add_query_arg('limit', 'payment')); ?>">
+														Restricted access
+													</a>
+												</li>
+											</ul>
 										</div>
-										<ul>
-											<li class="<?php echo empty($limit) ? 'active' : '' ?>">
-												<a href="<?php echo esc_url(remove_query_arg('limit')); ?>">
-													All access levels
-												</a>
-											</li>
 
-											<li class="<?php echo !empty($limit) && $limit === 'free' ? 'active' : '' ?>">
-												<a href="<?php echo esc_url(add_query_arg('limit', 'free')); ?>">
-													Free access
-												</a>
-											</li>
+										<div class="select-form">
+											<div class="select-label d-flex justify-content-between align-items-center">
+												<span>Language</span>
+												<?php echo twmp_get_svg_icon('angle-down') ?>
+											</div>
+											<ul>
+												<li class="<?php echo empty($language) ? 'active' : '' ?>">
+													<a href="<?php echo esc_url(remove_query_arg('language')); ?>">
+														All language
+													</a>
+												</li>
 
-											<li class="<?php echo !empty($limit) && $limit === 'payment' ? 'active' : '' ?>">
-												<a href="<?php echo esc_url(add_query_arg('limit', 'payment')); ?>">
-													Restricted access
-												</a>
-											</li>
-										</ul>
-									</div>
+												<li class="<?php echo !empty($language) && $language === 'english' ? 'active' : '' ?>">
+													<a href="<?php echo esc_url(add_query_arg('language', 'english')); ?>">
+														English
+													</a>
+												</li>
 
-									<div class="select-form">
-										<div class="select-label d-flex justify-content-between align-items-center">
-											<span>Language</span>
-											<?php echo twmp_get_svg_icon('angle-down') ?>
+												<li class="<?php echo !empty($language) && $language === 'vietnamese' ? 'active' : '' ?>">
+													<a href="<?php echo esc_url(add_query_arg('language', 'vietnamese')); ?>">
+														Vietnamese
+													</a>
+												</li>
+											</ul>
 										</div>
-										<ul>
-											<li class="<?php echo empty($language) ? 'active' : '' ?>">
-												<a href="<?php echo esc_url(remove_query_arg('language')); ?>">
-													All language
-												</a>
-											</li>
 
-											<li class="<?php echo !empty($language) && $language === 'english' ? 'active' : '' ?>">
-												<a href="<?php echo esc_url(add_query_arg('language', 'english')); ?>">
-													English
-												</a>
-											</li>
+										<div class="select-form">
+											<div class="select-label d-flex justify-content-between align-items-center">
+												<span>Sort By </span>
+												<?php echo twmp_get_svg_icon('angle-down') ?>
+											</div>
+											<ul>
+												<li class="<?php echo !empty($sort) && $sort === 'newest' ? 'active' : '' ?>">
+													<a href="<?php echo esc_url(remove_query_arg('sort', 'newest')); ?>">
+														Newest
+													</a>
+												</li>
 
-											<li class="<?php echo !empty($language) && $language === 'vietnamese' ? 'active' : '' ?>">
-												<a href="<?php echo esc_url(add_query_arg('language', 'vietnamese')); ?>">
-													Vietnamese
-												</a>
-											</li>
-										</ul>
-									</div>
+												<li class="<?php echo !empty($sort) && $sort === 'random' ? 'active' : '' ?>">
+													<a href="<?php echo esc_url(add_query_arg('sort', 'random')); ?>">
+														Most Popular
+													</a>
+												</li>
 
-									<div class="select-form">
-										<div class="select-label d-flex justify-content-between align-items-center">
-											<span>Sort By </span>
-											<?php echo twmp_get_svg_icon('angle-down') ?>
+												<li class="<?php echo !empty($sort) && $sort === 'title-asc' ? 'active' : '' ?>">
+													<a href="<?php echo esc_url(add_query_arg('sort', 'title-asc')); ?>">
+														Alphabet (A-Z)
+													</a>
+												</li>
+
+												<li class="<?php echo !empty($sort) && $sort === 'title-desc' ? 'active' : '' ?>">
+													<a href="<?php echo esc_url(add_query_arg('sort', 'title-desc')); ?>">
+														Alphabet (Z-A)
+													</a>
+												</li>
+											</ul>
 										</div>
-										<ul>
-											<li class="<?php echo !empty($sort) && $sort === 'newest' ? 'active' : '' ?>">
-												<a href="<?php echo esc_url(remove_query_arg('sort', 'newest')); ?>">
-													Newest
-												</a>
-											</li>
-
-											<li class="<?php echo !empty($sort) && $sort === 'random' ? 'active' : '' ?>">
-												<a href="<?php echo esc_url(add_query_arg('sort', 'random')); ?>">
-													Most Popular
-												</a>
-											</li>
-
-											<li class="<?php echo !empty($sort) && $sort === 'title-asc' ? 'active' : '' ?>">
-												<a href="<?php echo esc_url(add_query_arg('sort', 'title-asc')); ?>">
-													Alphabet (A-Z)
-												</a>
-											</li>
-
-											<li class="<?php echo !empty($sort) && $sort === 'title-desc' ? 'active' : '' ?>">
-												<a href="<?php echo esc_url(add_query_arg('sort', 'title-desc')); ?>">
-													Alphabet (Z-A)
-												</a>
-											</li>
-										</ul>
 									</div>
 								</div>
 
@@ -439,7 +441,7 @@ get_header();
 										<?php if (!empty($language)): ?>
 											<div class="folder-active filder-active-item d-flex align-items-center text-capitalize">
 												<span class=""><?php echo esc_html($language) ?></span>
-												<a href="<?php echo esc_url(remove_query_arg('folder')); ?>">
+												<a href="<?php echo esc_url(remove_query_arg('language')); ?>">
 													<?php echo twmp_get_svg_icon('close'); ?>
 												</a>
 											</div>
