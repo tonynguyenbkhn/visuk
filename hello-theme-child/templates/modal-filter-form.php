@@ -16,6 +16,24 @@ $_attributes .= !empty($data['attributes']) ? ' ' . $data['attributes'] : '';
 
 $_close_button_class = !empty($data['close_button_class']) ? $data['close_button_class'] : 'js-close-button';
 
+$title = '';
+$author = '';
+$from_year = '';
+$to_year = '';
+
+if (isset($data['data_search']['title']) && is_string($data['data_search']['title'])) {
+    $title = sanitize_text_field($data['data_search']['title']);
+}
+if (isset($data['data_search']['author']) && is_string($data['data_search']['author'])) {
+    $title = sanitize_text_field($data['data_search']['author']);
+}
+if (isset($data['data_search']['from_year']) && is_string($data['data_search']['from_year'])) {
+    $title = sanitize_text_field($data['data_search']['from_year']);
+}
+if (isset($data['data_search']['to_year']) && is_string($data['data_search']['to_year'])) {
+    $title = sanitize_text_field($data['data_search']['to_year']);
+}
+
 ?>
 
 <div class="<?php echo $_class; ?>" <?php echo $_attributes; ?>>
@@ -32,25 +50,25 @@ $_close_button_class = !empty($data['close_button_class']) ? $data['close_button
                     <div class="col-12">
                         <div class="form-control">
                             <label for="title">Title</label>
-                            <input type="text" name="search_title" id="title" value="<?php echo esc_attr($data['data_search']['title']); ?>">
+                            <input type="text" name="search_title" id="title" value="<?php echo esc_attr($title); ?>">
                         </div>
                     </div>
                     <div class="col-12">
                         <div class="form-control">
                             <label for="author">Author</label>
-                            <input type="text" name="search_author" id="author" value="<?php echo esc_attr($data['data_search']['author']); ?>">
+                            <input type="text" name="search_author" id="author" value="<?php echo esc_attr($author); ?>">
                         </div>
                     </div>
                     <div class="col-6">
                         <div class="form-control">
                             <label for="from_year">From</label>
-                            <input type="text" name="from_year" id="from_year" value="<?php echo esc_attr($data['data_search']['from_year']); ?>">
+                            <input type="text" name="from_year" id="from_year" value="<?php echo esc_attr($from_year); ?>">
                         </div>
                     </div>
                     <div class="col-6">
                         <div class="form-control">
                             <label for="to_year">To</label>
-                            <input type="text" name="to_year" id="to_year" value="<?php echo esc_attr($data['data_search']['to_year']); ?>">
+                            <input type="text" name="to_year" id="to_year" value="<?php echo esc_attr($to_year); ?>">
                         </div>
                     </div>
                     <div class="col-12">

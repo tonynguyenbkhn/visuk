@@ -60,10 +60,12 @@ if (!empty($who)) {
 			<div class="post-row__content">
 				<div class="d-flex align-items-center">
 					<?php if ($need_show_restricted): ?>
-						<div class="restricted">
-							<?php echo twmp_get_svg_icon('restricted') ?>
-							<span><?php echo esc_html('premium access') ?></span>
-						</div>
+						<?php foreach( get_ihc_membership_labels_by_ids($who) as $item ): ?>
+							<div class="restricted">
+								<?php echo twmp_get_svg_icon('restricted') ?>
+								<span><?php echo esc_html($item['label']) ?></span>
+							</div>
+						<?php endforeach; ?>
 					<?php endif; ?>
 					<?php if ($format): ?>
 					<div class="post-type">

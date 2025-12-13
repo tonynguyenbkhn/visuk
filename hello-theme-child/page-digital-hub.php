@@ -18,8 +18,16 @@ get_header();
 					$search_author  = isset($_GET['search_author']) ? sanitize_text_field($_GET['search_author']) : '';
 					$from_year      = isset($_GET['from_year']) ? sanitize_text_field($_GET['from_year']) : '';
 					$to_year        = isset($_GET['to_year']) ? sanitize_text_field($_GET['to_year']) : '';
-
+					$folder 		= isset($_GET['folder']) ? sanitize_text_field($_GET['folder']) : '';
+					$type     		= isset($_GET['type']) ? sanitize_text_field($_GET['type']) : '';
+					$language 		= isset($_GET['language']) ? sanitize_text_field($_GET['language']) : '';
+					$sort 			= isset($_GET['sort']) ? sanitize_text_field($_GET['sort']) : 'newest';
+					$limit 			= isset($_GET['limit']) ? sanitize_text_field($_GET['limit']) : '';
 					$filter_args = array();
+
+					if (!isset($filter_args['meta_query'])) {
+						$filter_args['meta_query'] = array();
+					}
 
 					// --- 1. Tìm theo tiêu đề hoặc nội dung ---
 					if (!empty($search_title)) {
@@ -75,6 +83,133 @@ get_header();
 							'day' => 31,
 						);
 					}
+
+					// --- 5. Lọc theo folder (ACF radio button) ---
+					if (
+						(!empty($folder) && $folder !== 'all') ||
+						(!empty($type) && $type !== 'all') ||
+						(!empty($language) && $language !== 'all')
+					) {
+						$filter_args['meta_query'] = array(
+							'relation' => 'AND'
+						);
+
+						// Folder
+						if (!empty($folder) && $folder !== 'all') {
+							$filter_args['meta_query'][] = array(
+								'key'     => 'folder',
+								'value'   => $folder,
+								'compare' => '='
+							);
+						}
+
+						// Type
+						if (!empty($type) && $type !== 'all') {
+							$filter_args['meta_query'][] = array(
+								'key'     => 'type',
+								'value'   => $type,
+								'compare' => '='
+							);
+						}
+
+						// Language
+						if (!empty($language) && $language !== 'all') {
+							$filter_args['meta_query'][] = array(
+								'key'     => 'language',
+								'value'   => $language,
+								'compare' => '='
+							);
+						}
+					}
+
+					// --- Sort logic ---
+					switch ($sort) {
+
+						// Newest (mặc định)
+						case 'newest':
+							$filter_args['orderby'] = 'date';
+							$filter_args['order']   = 'DESC';
+							break;
+
+						// Most Popular (random – theo UI hiện tại)
+						case 'random':
+							$filter_args['orderby'] = 'rand';
+							break;
+
+						// Alphabet A–Z
+						case 'title-asc':
+							$filter_args['orderby'] = 'title';
+							$filter_args['order']   = 'ASC';
+							break;
+
+						// Alphabet Z–A
+						case 'title-desc':
+							$filter_args['orderby'] = 'title';
+							$filter_args['order']   = 'DESC';
+							break;
+
+						// Fallback
+						default:
+							$filter_args['orderby'] = 'date';
+							$filter_args['order']   = 'DESC';
+							break;
+					}
+
+					if (empty($limit)) {
+						// $filter_args['meta_query'][] = array(
+						// 	'relation' => 'OR',
+						// 	array(
+						// 		'key'     => 'ihc_mb_who',
+						// 		'compare' => 'NOT EXISTS'
+						// 	),
+						// 	array(
+						// 		'key'     => 'ihc_mb_who',
+						// 		'value'   => '',
+						// 		'compare' => '='
+						// 	)
+						// );
+					}
+
+					if ($limit === 'free') {
+
+						$free_ids = get_ihc_membership_ids_by_payment_type('free');
+
+						if (! empty($free_ids)) {
+
+							$or = array('relation' => 'OR');
+
+							foreach ($free_ids as $id) {
+								$or[] = array(
+									'key'     => 'ihc_mb_who',
+									'value'   => (string) $id,
+									'compare' => 'LIKE'
+								);
+							}
+
+							$filter_args['meta_query'][] = $or;
+						}
+					}
+
+					if ($limit === 'payment') {
+
+						$payment_ids = get_ihc_membership_ids_by_payment_type('payment');
+
+						if (! empty($payment_ids)) {
+
+							$or = array('relation' => 'OR');
+
+							foreach ($payment_ids as $id) {
+								$or[] = array(
+									'key'     => 'ihc_mb_who',
+									'value'   => (string) $id,
+									'compare' => 'LIKE'
+								);
+							}
+
+							$filter_args['meta_query'][] = $or;
+						}
+					}
+
 					if (count($date_query_args) > 1) {
 						$filter_args['date_query'] = array($date_query_args);
 					}
@@ -106,10 +241,215 @@ get_header();
 									twmp_get_svg_icon('filter') // phpcs:ignore -- Escaping not necessary here.
 								);
 								?>
+								<div class="d-flex align-items-center justify-content-between filter-wrap">
+									<span class="filter-label">Filter</span>
+									<div class="select-form">
+										<div class="select-label d-flex justify-content-between align-items-center">
+											<span>Folder</span>
+											<?php echo twmp_get_svg_icon('angle-down') ?>
+										</div>
+										<ul>
+											<li class="<?php echo empty($folder) ? 'active' : '' ?>">
+												<a href="<?php echo esc_url(remove_query_arg('folder')); ?>">
+													All Folders
+												</a>
+											</li>
+
+											<li class="<?php echo !empty($folder) && $folder === 'video' ? 'active' : '' ?>">
+												<a href="<?php echo esc_url(add_query_arg('folder', 'video')); ?>">
+													Videos
+												</a>
+											</li>
+
+											<li class="<?php echo !empty($folder) && $folder === 'publication' ? 'active' : '' ?>">
+												<a href="<?php echo esc_url(add_query_arg('folder', 'publication')); ?>">
+													Publications
+												</a>
+											</li>
+
+											<li class="<?php echo !empty($folder) && $folder === 'slide' ? 'active' : '' ?>">
+												<a href="<?php echo esc_url(add_query_arg('folder', 'slide')); ?>">
+													Slides
+												</a>
+											</li>
+										</ul>
+									</div>
+
+									<div class="select-form">
+										<div class="select-label d-flex justify-content-between align-items-center">
+											<span>Type</span>
+											<?php echo twmp_get_svg_icon('angle-down') ?>
+										</div>
+										<ul>
+											<li class="<?php echo empty($type) ? 'active' : '' ?>">
+												<a href="<?php echo esc_url(remove_query_arg('type')); ?>">
+													All Type
+												</a>
+											</li>
+
+											<li class="<?php echo !empty($type) && $type === 'pdf' ? 'active' : '' ?>">
+												<a href="<?php echo esc_url(add_query_arg('type', 'pdf')); ?>">
+													PDF
+												</a>
+											</li>
+
+											<li class="<?php echo !empty($type) && $type === 'doc' ? 'active' : '' ?>">
+												<a href="<?php echo esc_url(add_query_arg('type', 'doc')); ?>">
+													DOC
+												</a>
+											</li>
+
+											<li class="<?php echo !empty($type) && $type === 'docs' ? 'active' : '' ?>">
+												<a href="<?php echo esc_url(add_query_arg('type', 'docs')); ?>">
+													DOCX
+												</a>
+											</li>
+
+											<li class="<?php echo !empty($type) && $type === 'ppt' ? 'active' : '' ?>">
+												<a href="<?php echo esc_url(add_query_arg('type', 'ppt')); ?>">
+													PPT
+												</a>
+											</li>
+
+											<li class="<?php echo !empty($type) && $type === 'pptx' ? 'active' : '' ?>">
+												<a href="<?php echo esc_url(add_query_arg('type', 'pptx')); ?>">
+													PPTX
+												</a>
+											</li>
+
+											<li class="<?php echo !empty($type) && $type === 'xls' ? 'active' : '' ?>">
+												<a href="<?php echo esc_url(add_query_arg('type', 'xls')); ?>">
+													XLS
+												</a>
+											</li>
+
+											<li class="<?php echo !empty($type) && $type === 'xlsx' ? 'active' : '' ?>">
+												<a href="<?php echo esc_url(add_query_arg('type', 'xlsx')); ?>">
+													XLSX
+												</a>
+											</li>
+										</ul>
+									</div>
+
+									<div class="select-form">
+										<div class="select-label d-flex justify-content-between align-items-center">
+											<span>Restricted/Free:</span>
+											<?php echo twmp_get_svg_icon('angle-down') ?>
+										</div>
+										<ul>
+											<li class="<?php echo empty($limit) ? 'active' : '' ?>">
+												<a href="<?php echo esc_url(remove_query_arg('limit')); ?>">
+													All access levels
+												</a>
+											</li>
+
+											<li class="<?php echo !empty($limit) && $limit === 'free' ? 'active' : '' ?>">
+												<a href="<?php echo esc_url(add_query_arg('limit', 'free')); ?>">
+													Free access
+												</a>
+											</li>
+
+											<li class="<?php echo !empty($limit) && $limit === 'payment' ? 'active' : '' ?>">
+												<a href="<?php echo esc_url(add_query_arg('limit', 'payment')); ?>">
+													Restricted access
+												</a>
+											</li>
+										</ul>
+									</div>
+
+									<div class="select-form">
+										<div class="select-label d-flex justify-content-between align-items-center">
+											<span>Language</span>
+											<?php echo twmp_get_svg_icon('angle-down') ?>
+										</div>
+										<ul>
+											<li class="<?php echo empty($language) ? 'active' : '' ?>">
+												<a href="<?php echo esc_url(remove_query_arg('language')); ?>">
+													All language
+												</a>
+											</li>
+
+											<li class="<?php echo !empty($language) && $language === 'english' ? 'active' : '' ?>">
+												<a href="<?php echo esc_url(add_query_arg('language', 'english')); ?>">
+													English
+												</a>
+											</li>
+
+											<li class="<?php echo !empty($language) && $language === 'vietnamese' ? 'active' : '' ?>">
+												<a href="<?php echo esc_url(add_query_arg('language', 'vietnamese')); ?>">
+													Vietnamese
+												</a>
+											</li>
+										</ul>
+									</div>
+
+									<div class="select-form">
+										<div class="select-label d-flex justify-content-between align-items-center">
+											<span>Sort By </span>
+											<?php echo twmp_get_svg_icon('angle-down') ?>
+										</div>
+										<ul>
+											<li class="<?php echo !empty($sort) && $sort === 'newest' ? 'active' : '' ?>">
+												<a href="<?php echo esc_url(remove_query_arg('sort', 'newest')); ?>">
+													Newest
+												</a>
+											</li>
+
+											<li class="<?php echo !empty($sort) && $sort === 'random' ? 'active' : '' ?>">
+												<a href="<?php echo esc_url(add_query_arg('sort', 'random')); ?>">
+													Most Popular
+												</a>
+											</li>
+
+											<li class="<?php echo !empty($sort) && $sort === 'title-asc' ? 'active' : '' ?>">
+												<a href="<?php echo esc_url(add_query_arg('sort', 'title-asc')); ?>">
+													Alphabet (A-Z)
+												</a>
+											</li>
+
+											<li class="<?php echo !empty($sort) && $sort === 'title-desc' ? 'active' : '' ?>">
+												<a href="<?php echo esc_url(add_query_arg('sort', 'title-desc')); ?>">
+													Alphabet (Z-A)
+												</a>
+											</li>
+										</ul>
+									</div>
+								</div>
+
+								<div class="filter-active-items">
+									<div class="d-flex align-items-center">
+										<?php if (!empty($folder)): ?>
+											<div class="folder-active filder-active-item d-flex align-items-center text-capitalize">
+												<span class=""><?php echo esc_html($folder) ?></span>
+												<a href="<?php echo esc_url(remove_query_arg('folder')); ?>">
+													<?php echo twmp_get_svg_icon('close'); ?>
+												</a>
+											</div>
+										<?php endif; ?>
+
+										<?php if (!empty($type)): ?>
+											<div class="folder-active filder-active-item d-flex align-items-center text-uppercase">
+												<span class=""><?php echo esc_html($type) ?></span>
+												<a href="<?php echo esc_url(remove_query_arg('type')); ?>">
+													<?php echo twmp_get_svg_icon('close'); ?>
+												</a>
+											</div>
+										<?php endif; ?>
+
+										<?php if (!empty($language)): ?>
+											<div class="folder-active filder-active-item d-flex align-items-center text-capitalize">
+												<span class=""><?php echo esc_html($language) ?></span>
+												<a href="<?php echo esc_url(remove_query_arg('folder')); ?>">
+													<?php echo twmp_get_svg_icon('close'); ?>
+												</a>
+											</div>
+										<?php endif; ?>
+									</div>
+								</div>
 							</form>
 
 							<!-- Sort List -->
-							<div class="sort-list">
+							<div class="sort-list d-none">
 								<div class="d-flex">
 									<span>Sorted by:</span>
 									<ul class="reset d-flex">
@@ -153,6 +493,8 @@ get_header();
 									'query' => $post_query
 								]);
 								?>
+							<?php else : ?>
+								<?php echo do_shortcode('[elementor-template id="2136"]'); ?>
 							<?php endif; ?>
 						</div>
 					</div>

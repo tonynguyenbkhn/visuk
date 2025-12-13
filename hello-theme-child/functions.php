@@ -75,8 +75,14 @@ function twmp_get_svg_icon($name)
 		case 'search-icon':
 			$svg_icon = '<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M15.7955 15.8111L21 21M18 10.5C18 14.6421 14.6421 18 10.5 18C6.35786 18 3 14.6421 3 10.5C3 6.35786 6.35786 3 10.5 3C14.6421 3 18 6.35786 18 10.5Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>';
 			break;
+		case 'close':
+			$svg_icon = '<svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9.79344 1.20216C10.0684 0.927179 10.0684 0.481209 9.79344 0.206232C9.51846 -0.0687441 9.07249 -0.0687441 8.79751 0.206232L4.99967 4.00408L1.20216 0.206232C0.927179 -0.0687441 0.481209 -0.0687441 0.206232 0.206232C-0.0687441 0.481209 -0.0687441 0.927179 0.206232 1.20216L4.00408 5L0.206232 8.79784C-0.0687441 9.07282 -0.0687441 9.51879 0.206232 9.79377C0.481209 10.0687 0.927179 10.0687 1.20216 9.79377L5 5.99592L8.79784 9.79377C9.07282 10.0687 9.51879 10.0687 9.79377 9.79377C10.0687 9.51879 10.0687 9.07282 9.79377 8.79784L5.99592 5L9.79344 1.20216Z" fill="#111111"/></svg>';
+			break;
 		case 'angle-up':
 			$svg_icon = '<svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 17 17"><path d="M16.354 11.896l-.707.707L8.5 5.457l-7.146 7.146-.707-.707L8.5 4.043l7.854 7.853z"/></svg>';
+			break;
+		case 'angle-down':
+			$svg_icon = '<svg fill="#000000" viewBox="-8.5 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>angle-down</title> <path d="M7.28 20.040c-0.24 0-0.44-0.080-0.6-0.24l-6.44-6.44c-0.32-0.32-0.32-0.84 0-1.2 0.32-0.32 0.84-0.32 1.2 0l5.84 5.84 5.84-5.84c0.32-0.32 0.84-0.32 1.2 0 0.32 0.32 0.32 0.84 0 1.2l-6.44 6.44c-0.16 0.16-0.4 0.24-0.6 0.24z"></path> </g></svg>';
 			break;
 		case 'angle-right':
 			$svg_icon = '<svg width="9" height="14" viewBox="0 0 9 14" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M0.803654 0.46967C1.09655 0.176777 1.57142 0.176777 1.86431 0.46967L7.86431 6.46967C8.15721 6.76256 8.15721 7.23744 7.86431 7.53033L1.86431 13.5303C1.57142 13.8232 1.09655 13.8232 0.803654 13.5303C0.510761 13.2374 0.510761 12.7626 0.803654 12.4697L6.27332 7L0.803654 1.53033C0.510761 1.23744 0.510761 0.762563 0.803654 0.46967Z" fill="white"/></svg>';
@@ -251,18 +257,22 @@ function ihc_disable_checkout_on_register_form($output, $is_public, $typeOfForm,
 function themename_post_formats_setup()
 {
 	add_theme_support('post-formats', array(
-		'aside',
 		'gallery',
-		'link',
-		'image',
 		'quote',
-		'status',
-		'video',
-		'audio',
-		'chat'
+		'video'
 	));
 }
 add_action('after_setup_theme', 'themename_post_formats_setup');
+
+add_filter('post_format_name', 'rename_post_format_name', 10, 2);
+function rename_post_format_name($name, $slug) {
+    $map = [
+        'gallery' => 'Slides',
+        'quote'   => 'Publications',
+    ];
+
+    return $map[$slug] ?? $name;
+}
 
 /**
  * Khi login qua IHC login form: nếu URL chứa `redirect_to` và trỏ tới trang checkout (cùng host),
@@ -380,3 +390,76 @@ add_filter('get_search_form', function($form){
     );
     return $form;
 });
+
+function get_all_ihc_memberships() {
+    global $wpdb;
+
+    $table = $wpdb->prefix . 'ihc_memberships';
+
+    $results = $wpdb->get_results(
+        "SELECT * FROM {$table}",
+        ARRAY_A // trả về dạng array
+    );
+
+    return $results;
+}
+
+function get_ihc_membership_by_id( $id ) {
+    global $wpdb;
+
+    $table = $wpdb->prefix . 'ihc_memberships';
+
+    if ( empty($id) || ! is_numeric($id) ) {
+        return null;
+    }
+
+    return $wpdb->get_row(
+        $wpdb->prepare(
+            "SELECT * FROM {$table} WHERE id = %d",
+            (int) $id
+        ),
+        ARRAY_A
+    );
+}
+
+function get_ihc_membership_ids_by_payment_type( $payment_type ) {
+    global $wpdb;
+
+    $table = $wpdb->prefix . 'ihc_memberships';
+
+    return $wpdb->get_col(
+        $wpdb->prepare(
+            "SELECT id FROM {$table} WHERE payment_type = %s",
+            $payment_type
+        )
+    );
+}
+
+function get_ihc_membership_labels_by_ids( $ids_string ) {
+    global $wpdb;
+
+    if ( empty($ids_string) ) {
+        return [];
+    }
+
+    // Convert "5,6,7" -> [5,6,7]
+    $ids = array_filter(
+        array_map('intval', explode(',', $ids_string))
+    );
+
+    if ( empty($ids) ) {
+        return [];
+    }
+
+    $table = $wpdb->prefix . 'ihc_memberships';
+
+    // Tạo placeholder %d,%d,%d
+    $placeholders = implode(',', array_fill(0, count($ids), '%d'));
+
+    $sql = $wpdb->prepare(
+        "SELECT id, label FROM {$table} WHERE id IN ($placeholders)",
+        $ids
+    );
+
+    return $wpdb->get_results( $sql, ARRAY_A );
+}
