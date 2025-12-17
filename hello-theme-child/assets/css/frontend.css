@@ -18260,6 +18260,134 @@ button.swiper-pagination-bullet {
   stroke-width: 0;
   fill: #000;
 }
+
+.member-grid__button {
+  border: 1px solid #000;
+  background: none;
+  transition: background 0.3s ease, color 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 245px;
+  height: 47px;
+  font-size: 18px;
+  font-family: "Montserrat", Sans-serif;
+  font-variant: small-caps;
+  color: #111111;
+}
+
+@media (min-width: 1024px) {
+  .member-grid__button:hover {
+    border-color: #383084;
+  }
+}
+.member-grid__button:hover {
+  color: #111111;
+}
+
+.member-grid__button svg {
+  margin-left: 10px;
+}
+
+.member-grid .member-grid-item {
+  border-radius: 10px;
+  box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 30px;
+}
+
+.member-grid .member-grid-item__avatar img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.member-grid .member-grid-item__fullname {
+  font-family: "Montserrat", Sans-serif;
+  font-weight: 500;
+  font-size: 18px;
+  letter-spacing: -0.48px;
+  font-variant: small-caps;
+  color: #111111;
+  text-align: center;
+  margin-bottom: 0;
+}
+
+.member-grid .member-grid-item__socials {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  list-style: unset;
+  margin: 0;
+  padding: 0;
+}
+
+.member-grid .member-grid-item__socials li {
+  margin: 5px;
+  list-style: none;
+}
+
+.member-grid .member-grid-item__socials svg {
+  width: 17px;
+  height: 17px;
+  fill: #383084;
+}
+
+.member-grid .member-grid-item__socials svg svg {
+  width: 17px;
+  height: 17px;
+}
+
+.member-grid .member-grid-item__socials path {
+  fill: #383084;
+}
+
+.member-grid .member-grid-item__wrapper {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.member-grid .member-grid-item__content {
+  flex-flow: row wrap;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 0;
+  padding: 20px 0;
+}
+
+.member-grid .member-grid-item__content-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-top: auto;
+  padding-top: 20px;
+}
+
+.member-grid .member-grid-item__position {
+  font-family: "Montserrat", Sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  letter-spacing: -0.48px;
+  font-variant: small-caps;
+  color: #383084;
+  text-align: center;
+  margin-bottom: 0;
+}
+
+.member-grid .member-grid-item__university {
+  font-family: "Source Sans Pro", Sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  letter-spacing: 0;
+  font-variant: small-caps;
+  color: #E21D23;
+  text-align: center;
+  margin-bottom: 0;
+}
 /*!*****************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[1].use[2]!./node_modules/swiper/swiper.css ***!
   \*****************************************************************************************************************************************************/

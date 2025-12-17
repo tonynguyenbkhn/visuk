@@ -67,6 +67,22 @@ function shortcode_member_grid_slider($atts)
 }
 add_shortcode('member_grid_slider', 'shortcode_member_grid_slider');
 
+function shortcode_member_grid($atts)
+{
+	$atts = shortcode_atts(array(), $atts, 'member_grid');
+
+	ob_start();
+
+	get_template_part(
+		'templates/member-grid',
+		null,
+		array()
+	);
+
+	return ob_get_clean();
+}
+add_shortcode('member_grid', 'shortcode_member_grid');
+
 function twmp_get_svg_icon($name)
 {
 	$svg_icon = '';
