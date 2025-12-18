@@ -269,7 +269,7 @@ get_header();
 								</div>
 
 								<?php get_template_part('templates/post-grid', null, [
-									'class' => 'post-grid',
+									'class' => 'post-grid post-grid--events',
 									'block_layout' => '3-col',
 									'query' => $event_query
 								]);
@@ -314,7 +314,7 @@ get_header();
 								</div>
 
 								<?php get_template_part('templates/post-grid', null, [
-									'class' => 'post-grid',
+									'class' => 'post-grid post-grid--monthly-updates',
 									'block_layout' => '4-col',
 									'query' => $monthly_query // Sử dụng biến query mới
 								]);

@@ -475,7 +475,7 @@ get_header();
 							</div>
 							<?php
 							$post_args = array(
-								'post_type'              => 'event',
+								'post_type'              => 'digital-hub',
 								'post_status'            => 'publish',
 								'update_post_meta_cache' => false,
 								'update_post_term_cache' => false,
