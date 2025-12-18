@@ -9827,6 +9827,14 @@ ul.reset {
   font-weight: 400;
   font-family: var(--font-heading);
   letter-spacing: -0.48px;
+
+  &:hover {
+    color: var(--primary);
+  }
+}
+
+.page-search .post-card__button span:first-child {
+  margin-bottom: 5px;
 }
 
 .page-search .post-grid--events .post-card__button {
@@ -11966,4 +11974,50 @@ button.swiper-pagination-bullet {
   transform: rotate(45deg);
   right: -30px;
   top: 10px;
+}
+
+.post-grid--events-wrapper {
+  margin: 0 -10px;
+}
+
+.post-grid--events-container {
+  padding: 0 10px;
+}
+
+.post-card__tag-event {
+  background-color: var(--secondary);
+  font-family: var(--font-heading);
+  font-size: 12px;
+  text-transform: uppercase;
+  text-align: center;
+  position: absolute;
+  color: white;
+  padding: 8px;
+  right: 20px;
+  top: 20px;
+  z-index: 9;
+}
+
+.post-card__pre {
+  background-color: rgba(255, 210, 75, 1);
+  font-family: var(--font-heading);
+  font-size: 12px;
+  text-transform: uppercase;
+  text-align: center;
+  position: absolute;
+  color: var(--primary);
+  padding: 8px;
+  right: 100px;
+  top: 20px;
+  z-index: 9;
+
+  svg {
+    width: 16px;
+    height: 16px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    path {
+      fill: var(--primary);
+    }
+  }
 }

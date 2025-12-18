@@ -268,9 +268,10 @@ get_header();
 									?>
 								</div>
 
-								<?php get_template_part('templates/post-grid', null, [
+								<?php get_template_part('templates/post-grid-event', null, [
 									'class' => 'post-grid post-grid--events',
 									'block_layout' => '3-col',
+									'show_tag'=> true,
 									'query' => $event_query
 								]);
 								?>
@@ -313,9 +314,10 @@ get_header();
 									?>
 								</div>
 
-								<?php get_template_part('templates/post-grid', null, [
+								<?php get_template_part('templates/post-grid-event', null, [
 									'class' => 'post-grid post-grid--monthly-updates',
 									'block_layout' => '4-col',
+									'show_tag'=> false,
 									'query' => $monthly_query // Sử dụng biến query mới
 								]);
 								?>
