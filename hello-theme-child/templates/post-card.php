@@ -29,6 +29,73 @@ $post_description = $post_data->post_excerpt ? wp_trim_words($post_data->post_ex
 $options = $data['options'];
 
 ?>
+
+<?php
+$icon = '';
+$button_url = '';
+$button_text = '';
+
+$who = get_post_meta(get_the_ID(), 'ihc_mb_who', true);
+$typePost = ihc_get_access_type_by_membership_ids($who);
+if ($typePost === 'all') {
+	$icon = '';
+	$button_text = 'Download Now';
+	$button_url = esc_url_raw(get_permalink($post_data));
+} else {
+	if (is_user_logged_in()) {
+		$current_user = wp_get_current_user();
+
+		$user_levels = get_ihc_user_level_single($current_user->ID);
+
+		if (empty($user_levels)) {
+			$icon = twmp_get_svg_icon('lock');
+			$button_text = 'Join to Download';
+			$button_url = esc_url_raw(home_url('/membership/'));
+		} else {
+
+			$user_subscription_meta = get_ihc_subscription_payment_info($user_levels['id']);
+			$status = get_ihc_order_status_by_user_level($current_user->ID, $user_levels['level_id']);
+			if (!empty($who)) {
+				$needed_levels = array_map('trim', explode(',', $who));
+				if (in_array($user_levels['level_id'], $needed_levels)) {
+
+					if ($status === 'Completed') {
+						$icon = '';
+						$button_text = 'Download Now';
+						$button_url = esc_url_raw(get_permalink($post_data));
+					} else {
+						$icon = twmp_get_svg_icon('lock');
+						$button_text = 'Join to Download';
+						$button_url = esc_url_raw(home_url('/membership/'));
+					}
+				} elseif ($typePost == 'free' && $user_subscription_meta['payment_type'] == 'payment') {
+					if ($status === 'Completed') {
+						$icon = '';
+						$button_text = 'Download Now';
+						$button_url = esc_url_raw(get_permalink($post_data));
+					} else {
+						$icon = twmp_get_svg_icon('lock');
+						$button_text = 'Join to Download';
+						$button_url = esc_url_raw(home_url('/membership/'));
+					}
+				} else {
+					$icon = twmp_get_svg_icon('lock');
+					$button_text = 'Join to Download';
+					$button_url = esc_url_raw(home_url('/membership/'));
+				}
+			} else {
+				$icon = '';
+				$button_text = 'Download Now';
+			}
+		}
+	} else {
+		$icon = twmp_get_svg_icon('lock');
+		$button_text = 'Join to Download';
+		$button_url = esc_url_raw(home_url('/membership/'));
+	}
+}
+?>
+
 <article class="<?php echo esc_attr($_class); ?>">
 	<div class="post-card__wrapper">
 		<a class="image__overlay-link post-card__overlay-link" href="<?php echo esc_url_raw(get_permalink($post_data)); ?>" title="">
@@ -52,7 +119,7 @@ $options = $data['options'];
 			?>
 		</a>
 		<div class="post-card__content">
-			<a class="post-card__title-link" href="<?php echo esc_url_raw(get_permalink($post_data)); ?>" title="">
+			<a class="post-card__title-link" href="<?php echo esc_url_raw($button_url); ?>" title="">
 				<h3 class="post-card__title h5"><?php echo esc_html($post_title); ?></h3>
 			</a>
 			<?php if ($options['show_excerpt']): ?>
@@ -64,72 +131,7 @@ $options = $data['options'];
 				'author' => $options['show_author'],
 				'categories' => $options['show_categories'],
 				'class' => 'post-card__post-meta'
-			]);
-
-			$icon = '';
-			$button_url = '';
-			$button_text = '';
-
-			$who = get_post_meta(get_the_ID(), 'ihc_mb_who', true);
-			$typePost = ihc_get_access_type_by_membership_ids($who);
-			if ($typePost === 'all') {
-				$icon = '';
-				$button_text = 'Download Now';
-				$button_url = esc_url_raw(get_permalink($post_data));
-			} else {
-				if (is_user_logged_in()) {
-					$current_user = wp_get_current_user();
-
-					$user_levels = get_ihc_user_level_single($current_user->ID);
-
-					if (empty($user_levels)) {
-						$icon = twmp_get_svg_icon('lock');
-						$button_text = 'Join to Download';
-						$button_url = esc_url_raw(home_url('/membership/'));
-					} else {
-
-						$user_subscription_meta = get_ihc_subscription_payment_info($user_levels['id']);
-						$status = get_ihc_order_status_by_user_level($current_user->ID, $user_levels['level_id']);
-						if (!empty($who)) {
-							$needed_levels = array_map('trim', explode(',', $who));
-							if (in_array($user_levels['level_id'], $needed_levels)) {
-
-								if ($status === 'Completed') {
-									$icon = '';
-									$button_text = 'Download Now';
-									$button_url = esc_url_raw(get_permalink($post_data));
-								} else {
-									$icon = twmp_get_svg_icon('lock');
-									$button_text = 'Join to Download';
-									$button_url = esc_url_raw(home_url('/membership/'));
-								}
-							} elseif ($typePost == 'free' && $user_subscription_meta['payment_type'] == 'payment') {
-								if ($status === 'Completed') {
-									$icon = '';
-									$button_text = 'Download Now';
-									$button_url = esc_url_raw(get_permalink($post_data));
-								} else {
-									$icon = twmp_get_svg_icon('lock');
-									$button_text = 'Join to Download';
-									$button_url = esc_url_raw(home_url('/membership/'));
-								}
-							} else {
-								$icon = twmp_get_svg_icon('lock');
-								$button_text = 'Join to Download';
-								$button_url = esc_url_raw(home_url('/membership/'));
-							}
-						} else {
-							$icon = '';
-							$button_text = 'Download Now';
-						}
-					}
-				} else {
-					$icon = twmp_get_svg_icon('lock');
-					$button_text = 'Join to Download';
-					$button_url = esc_url_raw(home_url('/membership/'));
-				}
-			}
-			?>
+			]); ?>
 			<?php if ($data['view_more_button'] !== '') : ?>
 				<div class="post-card__footer">
 					<?php
