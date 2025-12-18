@@ -28,6 +28,8 @@ $post_description = $post_data->post_excerpt ? wp_trim_words($post_data->post_ex
 
 $options = $data['options'];
 
+$type = !empty(get_field('type', $data['post_id'])) ? get_field('type', $data['post_id']) : '';
+
 ?>
 
 <?php
@@ -98,6 +100,9 @@ if ($typePost === 'all') {
 
 <article class="<?php echo esc_attr($_class); ?>">
 	<div class="post-card__wrapper">
+		<?php if ( !empty($type) ): ?>
+			<div class="post-card__type"><?php echo esc_html($type); ?></div>
+		<?php endif; ?>
 		<a class="image__overlay-link post-card__overlay-link" href="<?php echo esc_url_raw(get_permalink($post_data)); ?>" title="">
 			<?php
 			if (has_post_thumbnail($data['post_id']) && get_the_post_thumbnail_url($data['post_id'])) {
