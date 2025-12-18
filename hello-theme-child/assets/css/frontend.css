@@ -16067,7 +16067,7 @@ ul.reset {
 .heading .heading__title {
   font-family: var(--font-heading);
   font-weight: 600;
-  font-variant: small-caps;
+  text-transform: uppercase;
   letter-spacing: 0.6px;
 }
 
@@ -16076,8 +16076,8 @@ ul.reset {
 }
 
 .small_caps {
-  font-variant: small-caps;
-  font-variant-caps: small-caps;
+  text-transform: uppercase;
+  text-transform: uppercase;
 }
 
 .member-grid-slider__button {
@@ -16091,7 +16091,7 @@ ul.reset {
   height: 47px;
   font-size: 18px;
   font-family: "Montserrat", Sans-serif;
-  font-variant: small-caps;
+  text-transform: uppercase;
   color: #111111;
 }
 
@@ -16128,7 +16128,7 @@ ul.reset {
   font-weight: 500;
   font-size: 18px;
   letter-spacing: -0.48px;
-  font-variant: small-caps;
+  text-transform: uppercase;
   color: #111111;
   text-align: center;
   margin-bottom: 0;
@@ -16189,7 +16189,7 @@ ul.reset {
   font-weight: 400;
   font-size: 12px;
   letter-spacing: -0.48px;
-  font-variant: small-caps;
+  text-transform: uppercase;
   color: #383084;
   text-align: center;
   margin-bottom: 0;
@@ -16200,7 +16200,7 @@ ul.reset {
   font-weight: 400;
   font-size: 16px;
   letter-spacing: 0;
-  font-variant: small-caps;
+  text-transform: uppercase;
   color: #E21D23;
   text-align: center;
   margin-bottom: 0;
@@ -16270,7 +16270,7 @@ ul.reset {
   color: rgb(17, 17, 17);
   font-family: var(--font-heading);
   background-color: transparent;
-  font-variant: small-caps;
+  text-transform: uppercase;
   line-height: 47px;
 }
 
@@ -16300,7 +16300,7 @@ ul.reset {
 .page-search .featured-post h5 {
   font-size: 32px;
   font-family: var(--font-heading);
-  font-variant: small-caps;
+  text-transform: uppercase;
   letter-spacing: 0.6px;
   line-height: 48px;
   text-transform: unset;
@@ -16387,7 +16387,7 @@ ul.reset {
   text-transform: capitalize;
   color: var(--title);
   font-family: var(--font-body);
-  font-variant: small-caps;
+  text-transform: uppercase;
   line-height: 150%;
   margin-bottom: 8px;
 }
@@ -16413,10 +16413,22 @@ ul.reset {
   display: flex;
   align-items: center;
   font-size: 18px;
-  font-variant: small-caps;
+  text-transform: uppercase;
   font-weight: 400;
   font-family: var(--font-heading);
   letter-spacing: -0.48px;
+}
+
+.page-search .post-grid--events .post-card__button {
+  width: 100%;
+  justify-content: flex-start;
+  gap: 10px;
+}
+
+.page-search .post-grid--monthly-updates .post-card__button {
+  width: 100%;
+  justify-content: flex-start;
+  gap: 10px;
 }
 
 .page-search .post-card__button:hover path {
@@ -16478,7 +16490,7 @@ ul.reset {
   display: flex;
   align-items: center;
   font-size: 18px;
-  font-variant: small-caps;
+  text-transform: uppercase;
   font-weight: 400;
   font-family: var(--font-heading);
   justify-content: center;
@@ -16491,7 +16503,7 @@ ul.reset {
   text-transform: capitalize;
   color: var(--title);
   font-family: var(--font-body);
-  font-variant: small-caps;
+  text-transform: uppercase;
   line-height: 150%;
   margin-bottom: 25px;
   font-weight: 600;
@@ -16559,7 +16571,7 @@ ul.reset {
   color: rgb(17, 17, 17);
   font-family: var(--font-heading);
   background-color: transparent;
-  font-variant: small-caps;
+  text-transform: uppercase;
   line-height: 47px;
 }
 
@@ -16880,7 +16892,7 @@ ul.reset {
   font-family: var(--font-heading);
   font-weight: 600;
   font-size: 18px;
-  font-variant: small-caps;
+  text-transform: uppercase;
   margin-bottom: 35px;
   display: block;
 }
@@ -16947,7 +16959,7 @@ ul.reset {
   font-family: var(--font-heading);
   font-weight: 400;
   letter-spacing: -0.48px;
-  font-variant: small-caps;
+  text-transform: uppercase;
   font-size: 18px;
   color: white;
   height: 36px;
@@ -17114,7 +17126,7 @@ ul.reset {
   line-height: normal;
   padding: 0;
   min-height: unset;
-  font-variant: small-caps;
+  text-transform: uppercase;
   text-align: left;
   margin-bottom: 10px;
 }
@@ -17190,7 +17202,7 @@ ul.reset {
   color: white;
   font-size: 18px;
   font-family: var(--font-heading);
-  font-variant: small-caps;
+  text-transform: uppercase;
 }
 
 @media (min-width: 1024px) {
@@ -17217,7 +17229,7 @@ ul.reset {
   font-family: var(--font-heading);
   font-size: 18px;
   font-weight: 600;
-  font-variant: small-caps;
+  text-transform: uppercase;
   border-radius: 0;
   background-image: none !important;
   width: 100%;
@@ -17257,7 +17269,7 @@ ul.reset {
   border: 0;
   font-family: var(--font-heading) !important;
   font-size: 18px;
-  font-variant: small-caps;
+  text-transform: uppercase;
   line-height: 150%;
   font-weight: 600;
   letter-spacing: 0.6px;
@@ -17316,7 +17328,7 @@ ul.reset {
   font-family: var(--font-heading);
   font-size: 18px !important;
   font-weight: 400;
-  font-variant: small-caps;
+  text-transform: uppercase;
   color: var(--primary) !important;
   height: 52px !important;
 }
@@ -17420,7 +17432,7 @@ ul.reset {
   line-height: 150%;
   font-weight: 400;
   color: var(--title);
-  font-variant: small-caps;
+  text-transform: uppercase;
 }
 
 .page__vis-register .iump-register-form {
@@ -17472,7 +17484,7 @@ ul.reset {
   font-family: var(--font-heading);
   font-size: 18px;
   font-weight: 600;
-  font-variant: small-caps;
+  text-transform: uppercase;
   border-radius: 0;
   background-image: none !important;
   width: 100%;
@@ -17497,7 +17509,7 @@ ul.reset {
 .info-section h3 {
   font-family: var(--font-heading);
   font-size: 28px;
-  font-variant: small-caps;
+  text-transform: uppercase;
   line-height: 150%;
   font-weight: 600;
   letter-spacing: 0.6px;
@@ -17543,7 +17555,7 @@ ul.reset {
 .info-section__main .price {
   font-family: var(--font-heading);
   font-size: 24px;
-  font-variant: small-caps;
+  text-transform: uppercase;
   line-height: 150%;
   font-weight: 600;
   letter-spacing: 0.6px;
@@ -17905,7 +17917,7 @@ ul.reset {
   font-size: var(--swiper-navigation-size);
   text-transform: none !important;
   letter-spacing: 0;
-  font-variant: initial;
+  text-transform: uppercase;
   line-height: 1;
 }
 
@@ -18272,7 +18284,7 @@ button.swiper-pagination-bullet {
   height: 47px;
   font-size: 18px;
   font-family: "Montserrat", Sans-serif;
-  font-variant: small-caps;
+  text-transform: uppercase;
   color: #111111;
 }
 
@@ -18310,7 +18322,7 @@ button.swiper-pagination-bullet {
   font-weight: 500;
   font-size: 18px;
   letter-spacing: -0.48px;
-  font-variant: small-caps;
+  text-transform: uppercase;
   color: #111111;
   text-align: center;
   margin-bottom: 0;
@@ -18372,7 +18384,7 @@ button.swiper-pagination-bullet {
   font-weight: 400;
   font-size: 12px;
   letter-spacing: -0.48px;
-  font-variant: small-caps;
+  text-transform: uppercase;
   color: #383084;
   text-align: center;
   margin-bottom: 0;
@@ -18383,7 +18395,7 @@ button.swiper-pagination-bullet {
   font-weight: 400;
   font-size: 16px;
   letter-spacing: 0;
-  font-variant: small-caps;
+  text-transform: uppercase;
   color: #E21D23;
   text-align: center;
   margin-bottom: 0;
