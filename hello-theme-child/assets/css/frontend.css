@@ -16229,6 +16229,11 @@ ul.reset {
   border-color: #B5B2C1;
 }
 
+@media (max-width: 767px) {
+  .page-search form input::placeholder {
+    color: transparent;
+  }
+}
 .page-search form button {
   padding: 0;
 }
@@ -16272,6 +16277,11 @@ ul.reset {
   background-color: transparent;
   text-transform: uppercase;
   line-height: 47px;
+}
+@media (max-width: 321px) {
+  .page-search .page-search__button {
+    display: none;
+  }
 }
 
 .page-search .page-search__button:hover {
@@ -16357,13 +16367,19 @@ ul.reset {
   z-index: 1;
 }
 
+.page-search-common .heading {
+  display: flex;
+  align-items: center;
+}
+
 .page-search .heading__title {
   font-size: 48px;
+  margin-bottom: 0;
 }
 
 @media (max-width: 1024px) {
   .page-search .heading__title {
-    font-size: 30px;
+    font-size: 24px;
   }
 }
 .page-search .post-card {
@@ -16801,6 +16817,11 @@ ul.reset {
   padding: 16px 20px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
   transition: box-shadow 0.2s ease;
+}
+@media (max-width: 767px) {
+  .publication-item {
+    padding: 10px;
+  }
 }
 
 .publication-item:hover {
@@ -17419,6 +17440,12 @@ ul.reset {
   margin-top: 73px;
   margin-bottom: 40px;
 }
+@media (max-width: 767px) {
+  .page-search-common {
+    margin-top: 30px !important;
+    margin-bottom: 30px !important;
+  }
+}
 
 .page-search-common.page-search-event__wrapper {
   margin-top: 110px;
@@ -17453,6 +17480,11 @@ ul.reset {
   text-decoration: underline;
   font-weight: 600;
   color: var(--primary);
+}
+@media (max-width: 767px) {
+  .publications-list .publication-title {
+    font-size: 20px;
+  }
 }
 
 .publications-list .publication-meta {
@@ -18590,6 +18622,11 @@ button.swiper-pagination-bullet {
 }
 .page-digital-hub-lastest .swiper-button::after {
   font-size: 24px;
+}
+@media (max-width: 567px) {
+  .page-digital-hub-lastest .swiper-button {
+    display: none;
+  }
 }
 
 .page-digital-hub-lastest-wrapper {

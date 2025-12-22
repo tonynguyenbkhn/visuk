@@ -16,6 +16,7 @@ get_header();
 
 					<?php
 					// --- BẮT ĐẦU LOGIC FILTER ---
+					$has_data = false;
 
 					$search_keyword = isset($_GET['search_key']) ? sanitize_text_field($_GET['search_key']) : '';
 					$search_title   = isset($_GET['search_title']) ? sanitize_text_field($_GET['search_title']) : '';
@@ -154,6 +155,7 @@ get_header();
 							?>
 
 							<?php if ($post_query->have_posts()) : ?>
+								<?php $has_data = true; ?>
 								<!-- Lastest news -->
 								<div class="d-flex justify-content-between page-search-common page-search-lastest-news__wrapper">
 									<?php
@@ -229,6 +231,8 @@ get_header();
 												</div> <!-- end .side-posts -->
 											</div> <!-- end .col-lg-6 -->
 								</div> <!-- end .row -->
+							<?php else: ?>
+								<?php $has_data = false; ?>
 							<?php endif; ?>
 							<?php wp_reset_postdata(); ?>
 
@@ -249,6 +253,7 @@ get_header();
 
 							?>
 							<?php if ($event_query->have_posts()) : ?>
+								<?php $has_data = true; ?>
 								<!-- Events -->
 								<div class="d-flex justify-content-between page-search-common page-search-event__wrapper">
 									<?php
@@ -271,10 +276,12 @@ get_header();
 								<?php get_template_part('templates/post-grid-event', null, [
 									'class' => 'post-grid post-grid--events',
 									'block_layout' => '3-col',
-									'show_tag'=> true,
+									'show_tag' => true,
 									'query' => $event_query
 								]);
 								?>
+							<?php else: ?>
+								<?php $has_data = false; ?>
 							<?php endif; ?>
 
 							<?php
@@ -295,6 +302,7 @@ get_header();
 							?>
 
 							<?php if ($event_query->have_posts()) : ?>
+								<?php $has_data = true; ?>
 								<!-- Monthly Updates -->
 								<div class="d-flex justify-content-between page-search-common page-search-monthly-update__wrapper">
 									<?php
@@ -317,10 +325,12 @@ get_header();
 								<?php get_template_part('templates/post-grid-event', null, [
 									'class' => 'post-grid post-grid--monthly-updates',
 									'block_layout' => '3-col',
-									'show_tag'=> false,
+									'show_tag' => false,
 									'query' => $monthly_query // Sử dụng biến query mới
 								]);
 								?>
+							<?php else: ?>
+								<?php $has_data = false; ?>
 							<?php endif; ?>
 
 							<?php
@@ -341,6 +351,7 @@ get_header();
 
 							<?php
 							if ($publications_query->have_posts()) : ?>
+								<?php $has_data = true; ?>
 								<!-- Publications -->
 								<div class="d-flex justify-content-between page-search-common page-search-publications__wrapper">
 									<?php
@@ -372,6 +383,12 @@ get_header();
 									<?php endwhile; ?>
 								</div>
 								<?php wp_reset_postdata(); ?>
+							<?php else: ?>
+								<?php $has_data = false; ?>
+							<?php endif; ?>
+
+							<?php if (!$has_data): ?>
+								<?php echo do_shortcode('[elementor-template id="2136"]'); ?>
 							<?php endif; ?>
 						</div>
 					</div>
