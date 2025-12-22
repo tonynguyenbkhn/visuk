@@ -16261,7 +16261,7 @@ ul.reset {
   border: none;
 }
 
-.page-search button.page-search__button {
+.page-search .page-search__button {
   border: 1px solid #111111;
   height: 47px;
   padding: 0 17px;
@@ -16272,6 +16272,20 @@ ul.reset {
   background-color: transparent;
   text-transform: uppercase;
   line-height: 47px;
+}
+
+.page-search .page-search__button:hover {
+  border-color: var(--primary);
+  color: var(--white);
+  background-color: var(--primary);
+}
+
+.page-search .featured-post {
+  height: 100%;
+}
+.page-search .featured-post img {
+  height: 100%;
+  object-fit: cover;
 }
 
 @media (max-width: 1023px) {
@@ -16312,8 +16326,16 @@ ul.reset {
     line-height: 30px;
   }
 }
+.page-search .side-post a {
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  /* số dòng */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
 .page-search .side-post a:hover {
-  color: #007bff;
+  color: var(--primary);
 }
 
 .page-search .post-thumb a {
@@ -16422,7 +16444,8 @@ ul.reset {
   color: var(--primary);
 }
 
-.page-search .post-card__button span:first-child {
+.page-search .post-card__button > span:first-child,
+.page-search .post-card__button > span:last-child {
   margin-bottom: 5px;
 }
 
@@ -16464,7 +16487,6 @@ ul.reset {
   border-radius: 10px;
   overflow: hidden;
   box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.15);
-  margin-bottom: 112px;
 }
 .page-digital-hub .post-list .post-card__image {
   width: 100%;
@@ -18180,6 +18202,7 @@ button.swiper-pagination-bullet {
   .filter-wrapper {
     overflow-x: scroll;
     white-space: nowrap;
+    overflow-y: hidden;
   }
 }
 
@@ -18533,6 +18556,60 @@ button.swiper-pagination-bullet {
 }
 .post-card__pre svg path {
   fill: var(--primary);
+}
+
+.text-2-line {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  /* số dòng */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.page-digital-hub-lastest .swiper {
+  overflow: unset;
+}
+.page-digital-hub-lastest .swiper-button {
+  top: -75px;
+  right: 0;
+  width: 50px;
+  height: 50px;
+  background-color: var(--secondary);
+  color: white;
+  left: unset;
+  z-index: 99;
+  border: 0;
+  outline: none;
+}
+.page-digital-hub-lastest .swiper-button:hover, .page-digital-hub-lastest .swiper-button:focus, .page-digital-hub-lastest .swiper-button:active {
+  border: 0;
+  outline: none;
+}
+.page-digital-hub-lastest .swiper-button.swiper-button-prev {
+  right: 60px;
+}
+.page-digital-hub-lastest .swiper-button::after {
+  font-size: 24px;
+}
+
+.page-digital-hub-lastest-wrapper {
+  margin: 0 -10px;
+  overflow: hidden;
+}
+
+.page-digital-hub-lastest-container {
+  padding: 0 10px;
+}
+
+.page-digital-hub-lastest__description {
+  font-family: var(--font-other);
+  color: var(--title);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.page-search-common.page-search-digital-hub {
+  margin-top: 0;
 }
 /*!*****************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[1].use[2]!./node_modules/swiper/swiper.css ***!

@@ -284,13 +284,14 @@ function themename_post_formats_setup()
 add_action('after_setup_theme', 'themename_post_formats_setup');
 
 add_filter('post_format_name', 'rename_post_format_name', 10, 2);
-function rename_post_format_name($name, $slug) {
-    $map = [
-        'gallery' => 'Slides',
-        'quote'   => 'Publications',
-    ];
+function rename_post_format_name($name, $slug)
+{
+	$map = [
+		'gallery' => 'Slides',
+		'quote'   => 'Publications',
+	];
 
-    return $map[$slug] ?? $name;
+	return $map[$slug] ?? $name;
 }
 
 /**
@@ -384,188 +385,196 @@ function twmp_restore_constants_for_approve_account($constants, $type)
 	return $constants;
 }
 
-add_action( 'template_redirect', 'twmp_redirect_default_search_to_newsletter' );
-function twmp_redirect_default_search_to_newsletter() {
+add_action('template_redirect', 'twmp_redirect_default_search_to_newsletter');
+function twmp_redirect_default_search_to_newsletter()
+{
 
-    // Chỉ thực thi khi đang ở trang search mặc định ?s=...
-    if ( is_search() && isset($_GET['s']) ) {
+	// Chỉ thực thi khi đang ở trang search mặc định ?s=...
+	if (is_search() && isset($_GET['s'])) {
 
-        $search = sanitize_text_field($_GET['s']);
+		$search = sanitize_text_field($_GET['s']);
 
-        // URL trang newsletter của bạn
-        $target = home_url( '/vis-newsletters/' );
+		// URL trang newsletter của bạn
+		$target = home_url('/vis-newsletters/');
 
-        // Redirect 301/302
-        wp_redirect( add_query_arg( 'search_key', $search, $target ) );
-        exit;
-    }
+		// Redirect 301/302
+		wp_redirect(add_query_arg('search_key', $search, $target));
+		exit;
+	}
 }
 
-add_filter('get_search_form', function($form){
-    $form = str_replace(
-        'action="' . esc_url(home_url('/')) . '"',
-        'action="' . esc_url(home_url('/vis-newsletters/')) . '"',
-        $form
-    );
-    return $form;
+add_filter('get_search_form', function ($form) {
+	$form = str_replace(
+		'action="' . esc_url(home_url('/')) . '"',
+		'action="' . esc_url(home_url('/vis-newsletters/')) . '"',
+		$form
+	);
+	return $form;
 });
 
-function get_all_ihc_memberships() {
-    global $wpdb;
+function get_all_ihc_memberships()
+{
+	global $wpdb;
 
-    $table = $wpdb->prefix . 'ihc_memberships';
+	$table = $wpdb->prefix . 'ihc_memberships';
 
-    $results = $wpdb->get_results(
-        "SELECT * FROM {$table}",
-        ARRAY_A // trả về dạng array
-    );
+	$results = $wpdb->get_results(
+		"SELECT * FROM {$table}",
+		ARRAY_A // trả về dạng array
+	);
 
-    return $results;
+	return $results;
 }
 
-function get_ihc_membership_by_id( $id ) {
-    global $wpdb;
+function get_ihc_membership_by_id($id)
+{
+	global $wpdb;
 
-    $table = $wpdb->prefix . 'ihc_memberships';
+	$table = $wpdb->prefix . 'ihc_memberships';
 
-    if ( empty($id) || ! is_numeric($id) ) {
-        return null;
-    }
+	if (empty($id) || ! is_numeric($id)) {
+		return null;
+	}
 
-    return $wpdb->get_row(
-        $wpdb->prepare(
-            "SELECT * FROM {$table} WHERE id = %d",
-            (int) $id
-        ),
-        ARRAY_A
-    );
+	return $wpdb->get_row(
+		$wpdb->prepare(
+			"SELECT * FROM {$table} WHERE id = %d",
+			(int) $id
+		),
+		ARRAY_A
+	);
 }
 
-function get_ihc_membership_ids_by_payment_type( $payment_type ) {
-    global $wpdb;
+function get_ihc_membership_ids_by_payment_type($payment_type)
+{
+	global $wpdb;
 
-    $table = $wpdb->prefix . 'ihc_memberships';
+	$table = $wpdb->prefix . 'ihc_memberships';
 
-    return $wpdb->get_col(
-        $wpdb->prepare(
-            "SELECT id FROM {$table} WHERE payment_type = %s",
-            $payment_type
-        )
-    );
+	return $wpdb->get_col(
+		$wpdb->prepare(
+			"SELECT id FROM {$table} WHERE payment_type = %s",
+			$payment_type
+		)
+	);
 }
 
-function get_ihc_membership_labels_by_ids( $ids_string ) {
-    global $wpdb;
+function get_ihc_membership_labels_by_ids($ids_string)
+{
+	global $wpdb;
 
-    if ( empty($ids_string) ) {
-        return [];
-    }
+	if (empty($ids_string)) {
+		return [];
+	}
 
-    // Convert "5,6,7" -> [5,6,7]
-    $ids = array_filter(
-        array_map('intval', explode(',', $ids_string))
-    );
+	// Convert "5,6,7" -> [5,6,7]
+	$ids = array_filter(
+		array_map('intval', explode(',', $ids_string))
+	);
 
-    if ( empty($ids) ) {
-        return [];
-    }
+	if (empty($ids)) {
+		return [];
+	}
 
-    $table = $wpdb->prefix . 'ihc_memberships';
+	$table = $wpdb->prefix . 'ihc_memberships';
 
-    // Tạo placeholder %d,%d,%d
-    $placeholders = implode(',', array_fill(0, count($ids), '%d'));
+	// Tạo placeholder %d,%d,%d
+	$placeholders = implode(',', array_fill(0, count($ids), '%d'));
 
-    $sql = $wpdb->prepare(
-        "SELECT id, label FROM {$table} WHERE id IN ($placeholders)",
-        $ids
-    );
+	$sql = $wpdb->prepare(
+		"SELECT id, label FROM {$table} WHERE id IN ($placeholders)",
+		$ids
+	);
 
-    return $wpdb->get_results( $sql, ARRAY_A );
+	return $wpdb->get_results($sql, ARRAY_A);
 }
 
-function ihc_get_access_type_by_membership_ids( $ids_string ) {
-    global $wpdb;
+function ihc_get_access_type_by_membership_ids($ids_string)
+{
+	global $wpdb;
 
-    if ( empty($ids_string) ) {
-        return 'all';
-    }
+	if (empty($ids_string)) {
+		return 'all';
+	}
 
-    // Convert "5,6,7" -> [5,6,7]
-    $ids = array_filter(
-        array_map('intval', explode(',', $ids_string))
-    );
+	// Convert "5,6,7" -> [5,6,7]
+	$ids = array_filter(
+		array_map('intval', explode(',', $ids_string))
+	);
 
-    if ( empty($ids) ) {
-        return 'all';
-    }
+	if (empty($ids)) {
+		return 'all';
+	}
 
-    $table = $wpdb->prefix . 'ihc_memberships';
+	$table = $wpdb->prefix . 'ihc_memberships';
 
-    // Query payment_type
-    $placeholders = implode(',', array_fill(0, count($ids), '%d'));
+	// Query payment_type
+	$placeholders = implode(',', array_fill(0, count($ids), '%d'));
 
-    $sql = $wpdb->prepare(
-        "SELECT payment_type FROM {$table} WHERE id IN ($placeholders)",
-        $ids
-    );
+	$sql = $wpdb->prepare(
+		"SELECT payment_type FROM {$table} WHERE id IN ($placeholders)",
+		$ids
+	);
 
-    $types = $wpdb->get_col( $sql );
+	$types = $wpdb->get_col($sql);
 
-    if ( empty($types) ) {
-        return 'all';
-    }
+	if (empty($types)) {
+		return 'all';
+	}
 
-    // Rule 1: chỉ cần 1 payment
-    if ( in_array('payment', $types, true) ) {
-        return 'payment';
-    }
+	// Rule 1: chỉ cần 1 payment
+	if (in_array('payment', $types, true)) {
+		return 'payment';
+	}
 
-    // Rule 2: toàn bộ free
-    if ( count(array_unique($types)) === 1 && $types[0] === 'free' ) {
-        return 'free';
-    }
+	// Rule 2: toàn bộ free
+	if (count(array_unique($types)) === 1 && $types[0] === 'free') {
+		return 'free';
+	}
 
-    // Rule 3: còn lại
-    return 'all';
+	// Rule 3: còn lại
+	return 'all';
 }
 
-function get_ihc_user_level_single( $user_id ) {
-    global $wpdb;
+function get_ihc_user_level_single($user_id)
+{
+	global $wpdb;
 
-    $user_id = (int) $user_id;
-    if ( $user_id <= 0 ) {
-        return null;
-    }
+	$user_id = (int) $user_id;
+	if ($user_id <= 0) {
+		return null;
+	}
 
-    $table = $wpdb->prefix . 'ihc_user_levels';
+	$table = $wpdb->prefix . 'ihc_user_levels';
 
-    return $wpdb->get_row(
-        $wpdb->prepare(
-            "SELECT id, level_id
+	return $wpdb->get_row(
+		$wpdb->prepare(
+			"SELECT id, level_id
              FROM {$table}
              WHERE user_id = %d
                AND status = 1
              ORDER BY start_time DESC
              LIMIT 1",
-            $user_id
-        ),
-        ARRAY_A
-    );
+			$user_id
+		),
+		ARRAY_A
+	);
 }
 
-function get_ihc_subscription_payment_info( $subscription_id ) {
-    global $wpdb;
+function get_ihc_subscription_payment_info($subscription_id)
+{
+	global $wpdb;
 
-    $subscription_id = (int) $subscription_id;
-    if ( $subscription_id <= 0 ) {
-        return null;
-    }
+	$subscription_id = (int) $subscription_id;
+	if ($subscription_id <= 0) {
+		return null;
+	}
 
-    $table = $wpdb->prefix . 'ihc_user_subscriptions_meta';
+	$table = $wpdb->prefix . 'ihc_user_subscriptions_meta';
 
-    return $wpdb->get_row(
-        $wpdb->prepare(
-            "
+	return $wpdb->get_row(
+		$wpdb->prepare(
+			"
             SELECT
                 MAX(CASE WHEN meta_key = 'id' THEN meta_value END)            AS membership_id,
                 MAX(CASE WHEN meta_key = 'payment_type' THEN meta_value END) AS payment_type,
@@ -573,20 +582,21 @@ function get_ihc_subscription_payment_info( $subscription_id ) {
             FROM {$table}
             WHERE subscription_id = %d
             ",
-            $subscription_id
-        ),
-        ARRAY_A
-    );
+			$subscription_id
+		),
+		ARRAY_A
+	);
 }
 
-function get_ihc_order_status_by_user_level( $user_id, $level_id ) {
-    global $wpdb;
+function get_ihc_order_status_by_user_level($user_id, $level_id)
+{
+	global $wpdb;
 
-    $table = $wpdb->prefix . 'ihc_orders';
+	$table = $wpdb->prefix . 'ihc_orders';
 
-    return $wpdb->get_var(
-        $wpdb->prepare(
-            "
+	return $wpdb->get_var(
+		$wpdb->prepare(
+			"
             SELECT status
             FROM {$table}
             WHERE uid = %d
@@ -594,8 +604,102 @@ function get_ihc_order_status_by_user_level( $user_id, $level_id ) {
             ORDER BY create_date DESC
             LIMIT 1
             ",
-            (int) $user_id,
-            (int) $level_id
-        )
-    );
+			(int) $user_id,
+			(int) $level_id
+		)
+	);
 }
+
+function twmp_download_button_shortcode($atts)
+{
+	ob_start();
+
+	global $post;
+
+	$post_id = $post->ID;
+
+	$icon = '';
+	$button_url = '';
+	$button_text = '';
+
+	$who = get_post_meta($post_id, 'ihc_mb_who', true);
+	$typePost = ihc_get_access_type_by_membership_ids($who);
+
+	if ($typePost === 'all') {
+
+		$button_text = 'Read More';
+		$button_url  = esc_url(get_permalink($post_id));
+	} else {
+
+		if (is_user_logged_in()) {
+
+			$current_user = wp_get_current_user();
+			$user_levels  = get_ihc_user_level_single($current_user->ID);
+
+			if (empty($user_levels)) {
+
+				$icon = twmp_get_svg_icon('lock');
+				$button_text = 'Premium access';
+				$button_url  = esc_url(home_url('/membership/'));
+			} else {
+
+				$user_subscription_meta = get_ihc_subscription_payment_info($user_levels['id']);
+				$status = get_ihc_order_status_by_user_level(
+					$current_user->ID,
+					$user_levels['level_id']
+				);
+
+				if (!empty($who)) {
+
+					$needed_levels = array_map('trim', explode(',', $who));
+
+					if (in_array($user_levels['level_id'], $needed_levels)) {
+
+						if ($status === 'Completed') {
+							$button_text = 'Read More';
+							$button_url  = esc_url(get_permalink($post_id));
+						} else {
+							$icon = twmp_get_svg_icon('lock');
+							$button_text = 'Premium access';
+							$button_url  = esc_url(home_url('/membership/'));
+						}
+					} elseif ($typePost === 'free' && $user_subscription_meta['payment_type'] === 'payment') {
+
+						if ($status === 'Completed') {
+							$button_text = 'Read More';
+							$button_url  = esc_url(get_permalink($post_id));
+						} else {
+							$icon = twmp_get_svg_icon('lock');
+							$button_text = 'Premium access';
+							$button_url  = esc_url(home_url('/membership/'));
+						}
+					} else {
+						$icon = twmp_get_svg_icon('lock');
+						$button_text = 'Premium access';
+						$button_url  = esc_url(home_url('/membership/'));
+					}
+				} else {
+					$button_text = 'Read More';
+					$button_url  = esc_url(get_permalink($post_id));
+				}
+			}
+		} else {
+
+			$icon = twmp_get_svg_icon('lock');
+			$button_text = 'Premium access';
+			$button_url  = esc_url(home_url('/membership/'));
+		}
+	}
+
+	// Render button template
+	get_template_part('templates/button', null, [
+		'class'       => 'post-card__button',
+		'button_text' => $button_text,
+		'button_url' => $button_url,
+		'svg_icon_before' => $icon,
+		'svg_icon_after' => twmp_get_svg_icon('angle-long-right'),
+	]);
+
+	return ob_get_clean();
+}
+add_shortcode('download_button', 'twmp_download_button_shortcode');

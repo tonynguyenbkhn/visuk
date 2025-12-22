@@ -118,19 +118,19 @@ get_header();
 									<span>Sorted by:</span>
 									<ul class="reset d-flex">
 										<li>
-											<a href="<?php echo esc_url(get_permalink('/')); ?>">All</a>
+											<a href="/vis-newsletters/">All</a>
 										</li>
 										<li>
-											<a href="">News</a>
+											<a href="/news/">News</a>
 										</li>
 										<li>
-											<a href="">Events</a>
+											<a href="/events/">Events</a>
 										</li>
 										<li>
-											<a href="">Updates</a>
+											<a href="/updates/">Updates</a>
 										</li>
 										<li>
-											<a href="">Publications</a>
+											<a href="/vis-publications/">Publications</a>
 										</li>
 									</ul>
 								</div>
@@ -168,7 +168,7 @@ get_header();
 									get_template_part('templates/button', null, [
 										'class'       => 'page-search-lastest-news__button page-search__button',
 										'button_text' => esc_html('See more', 'twmp-vis'),
-										'button_url' => esc_url(''),
+										'button_url' => esc_url('/news/'),
 									]);
 									?>
 								</div>
@@ -263,7 +263,7 @@ get_header();
 									get_template_part('templates/button', null, [
 										'class'       => 'page-search-lastest-news__button page-search__button',
 										'button_text' => esc_html('See more', 'twmp-vis'),
-										'button_url' => esc_url(''),
+										'button_url' => esc_url('/events'),
 									]);
 									?>
 								</div>
@@ -285,7 +285,7 @@ get_header();
 								'update_post_meta_cache' => false,
 								'update_post_term_cache' => false,
 								'no_found_rows'          => true,
-								'posts_per_page'         => 4
+								'posts_per_page'         => 3
 							);
 
 							// HỢP NHẤT VỚI ARGS TÌM KIẾM
@@ -309,14 +309,14 @@ get_header();
 									get_template_part('templates/button', null, [
 										'class'       => 'page-search-lastest-news__button page-search__button',
 										'button_text' => esc_html('See more', 'twmp-vis'),
-										'button_url' => esc_url(''),
+										'button_url' => esc_url('/events/'),
 									]);
 									?>
 								</div>
 
 								<?php get_template_part('templates/post-grid-event', null, [
 									'class' => 'post-grid post-grid--monthly-updates',
-									'block_layout' => '4-col',
+									'block_layout' => '3-col',
 									'show_tag'=> false,
 									'query' => $monthly_query // Sử dụng biến query mới
 								]);
@@ -355,7 +355,7 @@ get_header();
 									get_template_part('templates/button', null, [
 										'class'       => 'page-search-lastest-news__button page-search__button',
 										'button_text' => esc_html('See more', 'twmp-vis'),
-										'button_url' => esc_url(''),
+										'button_url' => esc_url('/vis-publications/'),
 									]);
 									?>
 								</div>

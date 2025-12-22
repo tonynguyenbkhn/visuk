@@ -480,7 +480,10 @@ get_header();
 								'update_post_meta_cache' => false,
 								'update_post_term_cache' => false,
 								'no_found_rows'          => true,
-								'posts_per_page'         => 10
+								'posts_per_page'         => 10,
+								// lấy post mới nhất
+								'orderby' => 'date',
+								'order'   => 'DESC',
 							);
 
 							// HỢP NHẤT VỚI ARGS TÌM KIẾM
@@ -490,8 +493,8 @@ get_header();
 
 							?>
 							<?php if ($post_query->have_posts()) : ?>
-								<?php get_template_part('templates/post-list', null, [
-									'class' => 'post-list',
+								<?php get_template_part('templates/post-grid-slider', null, [
+									'class' => 'post-list page-digital-hub-lastest',
 									'query' => $post_query
 								]);
 								?>

@@ -22,7 +22,8 @@ __webpack_require__.r(__webpack_exports__);
 
 var map = {
 	"./member-grid-slider.js": "./hello-theme-child/src/js/blocks/member-grid-slider.js",
-	"./modal-filter-form.js": "./hello-theme-child/src/js/blocks/modal-filter-form.js"
+	"./modal-filter-form.js": "./hello-theme-child/src/js/blocks/modal-filter-form.js",
+	"./post-grid-slider.js": "./hello-theme-child/src/js/blocks/post-grid-slider.js"
 };
 
 
@@ -147,6 +148,86 @@ __webpack_require__.r(__webpack_exports__);
   const instance = (0,lib_modal__WEBPACK_IMPORTED_MODULE_0__["default"])(el, {
     id: 'modal-filter-form'
   });
+});
+
+/***/ }),
+
+/***/ "./hello-theme-child/src/js/blocks/post-grid-slider.js":
+/*!*************************************************************!*\
+  !*** ./hello-theme-child/src/js/blocks/post-grid-slider.js ***!
+  \*************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var lib_dom__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lib/dom */ "./hello-theme-child/src/js/lib/dom.js");
+/* harmony import */ var lib_utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! lib/utils */ "./hello-theme-child/src/js/lib/utils.js");
+/* harmony import */ var swiper__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! swiper */ "./node_modules/swiper/swiper.mjs");
+/* harmony import */ var swiper_modules__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! swiper/modules */ "./node_modules/swiper/modules/index.mjs");
+
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (el => {
+  let swiperEl = (0,lib_dom__WEBPACK_IMPORTED_MODULE_0__.select)('.js-swiper', el);
+  let settings = null;
+  let swiper = null;
+  const init = () => {
+    if (!(0,lib_dom__WEBPACK_IMPORTED_MODULE_0__.inViewPort)(el)) return;
+    if (!swiperEl && (0,lib_dom__WEBPACK_IMPORTED_MODULE_0__.hasClass)('is-not-loaded', el)) {
+      (0,lib_dom__WEBPACK_IMPORTED_MODULE_0__.loadNoscriptContent)(el);
+      swiperEl = (0,lib_dom__WEBPACK_IMPORTED_MODULE_0__.select)('.js-swiper', el);
+      settings = (0,lib_dom__WEBPACK_IMPORTED_MODULE_0__.getData)('settings', swiperEl) ? JSON.parse((0,lib_dom__WEBPACK_IMPORTED_MODULE_0__.getData)('settings', swiperEl)) : {};
+    }
+    if (swiper) return;
+    const swiperSettings = {
+      modules: [swiper_modules__WEBPACK_IMPORTED_MODULE_3__.Navigation, swiper_modules__WEBPACK_IMPORTED_MODULE_3__.Pagination],
+      slidesPerView: 1.2,
+      loop: true,
+      spaceBetween: 15,
+      navigation: {
+        nextEl: (0,lib_dom__WEBPACK_IMPORTED_MODULE_0__.select)('.swiper-button-next', el),
+        prevEl: (0,lib_dom__WEBPACK_IMPORTED_MODULE_0__.select)('.swiper-button-prev', el)
+      },
+      pagination: {
+        el: (0,lib_dom__WEBPACK_IMPORTED_MODULE_0__.select)('.swiper-pagination', el),
+        clickable: true
+      },
+      breakpoints: {
+        576: {
+          slidesPerView: 1.2
+        },
+        768: {
+          slidesPerView: 2.5
+        },
+        992: {
+          slidesPerView: 4
+        }
+      },
+      on: {
+        init: function () {
+          (0,lib_dom__WEBPACK_IMPORTED_MODULE_0__.addClass)('swiper-loaded', swiperEl);
+        }
+      }
+    };
+    if (settings && settings.autoplay && settings.autoplay > 0) {
+      swiperSettings.modules = [...swiperSettings.modules, ...[swiper_modules__WEBPACK_IMPORTED_MODULE_3__.Autoplay]];
+      swiperSettings.autoplay = {
+        delay: parseInt(settings.autoplay)
+      };
+    }
+    swiper = new swiper__WEBPACK_IMPORTED_MODULE_2__["default"](swiperEl, swiperSettings);
+    swiper.on('slideChange', function () {
+      const activeIndex = swiper.activeIndex;
+      const activeSlideEl = swiper.slides[activeIndex];
+      (0,lib_dom__WEBPACK_IMPORTED_MODULE_0__.loadNoscriptContent)(activeSlideEl);
+    });
+  };
+  init();
+  (0,lib_dom__WEBPACK_IMPORTED_MODULE_0__.on)('scroll', (0,lib_utils__WEBPACK_IMPORTED_MODULE_1__.throttle)(init, 100), window);
 });
 
 /***/ }),
