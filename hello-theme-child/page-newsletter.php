@@ -388,7 +388,9 @@ get_header();
 							<?php endif; ?>
 
 							<?php if (!$has_data): ?>
-								<?php echo do_shortcode('[elementor-template id="2136"]'); ?>
+								<div class="mt-3">
+									<?php echo do_shortcode('[elementor-template id="2136"]'); ?>
+								</div>
 							<?php endif; ?>
 						</div>
 					</div>
